@@ -1,0 +1,65 @@
+<config>
+  <executableName>${app.executable}</executableName>
+  <mainClass>${app.mainclass}</mainClass>
+  <os>ios</os>
+  <target>ios</target>
+  <iosInfoPList>Info.plist.xml</iosInfoPList>
+  <treeShaker>conservative</treeShaker>
+  <resources>
+    <resource>
+      <directory>../build/merged-assets</directory>
+      <includes><include>**</include></includes>
+      <skipPngCrush>true</skipPngCrush>
+    </resource>
+    <!-- .m4a sounds converted from .ogg (ios:convertIosAudio) - iOS cannot read .ogg -->
+    <resource>
+      <directory>build/ios-audio</directory>
+      <includes><include>**</include></includes>
+    </resource>
+    <resource>
+      <directory>data</directory>
+      <excludes><exclude>Assets.xcassets/**</exclude></excludes>
+    </resource>
+    <!-- App icon: Assets.car + AppIcon*.png compiled by ios:compileIosIcons from data/Assets.xcassets with actool -->
+    <resource>
+      <directory>build/ios-icons</directory>
+      <includes><include>**</include></includes>
+    </resource>
+  </resources>
+  <forceLinkClasses>
+    <!-- game + reflection-driven libs (Kryo/KryoNet wire classes, Jackson data binding, obfuscated package a) -->
+    <pattern>a.**</pattern>
+    <pattern>com.tlnt.**</pattern>
+    <pattern>com.shimaota.**</pattern>
+    <pattern>com.esotericsoftware.**</pattern>
+    <pattern>com.fasterxml.jackson.**</pattern>
+    <pattern>org.objenesis.**</pattern>
+    <pattern>com.badlogic.gdx.scenes.scene2d.ui.*</pattern>
+    <pattern>com.badlogic.gdx.graphics.g3d.particles.**</pattern>
+    <pattern>com.android.okhttp.HttpHandler</pattern>
+    <pattern>com.android.okhttp.HttpsHandler</pattern>
+    <pattern>com.android.org.conscrypt.**</pattern>
+    <pattern>com.android.org.bouncycastle.jce.provider.BouncyCastleProvider</pattern>
+    <pattern>com.android.org.bouncycastle.jcajce.provider.keystore.BC$Mappings</pattern>
+    <pattern>com.android.org.bouncycastle.jcajce.provider.keystore.bc.BcKeyStoreSpi</pattern>
+    <pattern>com.android.org.bouncycastle.jcajce.provider.keystore.bc.BcKeyStoreSpi$Std</pattern>
+    <pattern>com.android.org.bouncycastle.jce.provider.PKIXCertPathValidatorSpi</pattern>
+    <pattern>com.android.org.bouncycastle.crypto.digests.AndroidDigestFactoryOpenSSL</pattern>
+    <pattern>org.apache.harmony.security.provider.cert.DRLCertFactory</pattern>
+    <pattern>org.apache.harmony.security.provider.crypto.CryptoProvider</pattern>
+    <pattern>javax.crypto.**</pattern>
+  </forceLinkClasses>
+  <libs>
+    <lib>z</lib>
+  </libs>
+  <frameworks>
+    <framework>UIKit</framework>
+    <framework>OpenGLES</framework>
+    <framework>QuartzCore</framework>
+    <framework>CoreGraphics</framework>
+    <framework>OpenAL</framework>
+    <framework>AudioToolbox</framework>
+    <framework>AVFoundation</framework>
+    <framework>GameController</framework>
+  </frameworks>
+</config>

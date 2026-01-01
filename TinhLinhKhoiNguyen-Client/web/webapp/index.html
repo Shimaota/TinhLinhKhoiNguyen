@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- interactive-widget=overlays-content: the soft keyboard overlays the page instead of shrinking it (Chrome Android 108+) ->
+       the canvas keeps its size, so the game zoom does not change while typing the account / password. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=overlays-content">
+  <title>Tinh Linh Khoi Nguyen - Web Edition</title>
+
+  <!-- Mobile & PWA Fullscreen Meta -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TLKN">
+  <meta name="theme-color" content="#000000">
+  <meta name="screen-orientation" content="landscape">
+  <meta name="x5-orientation" content="landscape">
+
+  <!-- Force No-Cache for Mobile & Desktop Browsers -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="assets/startup-logo.png">
+  <link rel="apple-touch-icon" href="assets/startup-logo.png">
+</head>
+<body oncontextmenu="return false">
+
+  <!-- Mobile Portrait Rotate Prompt -->
+  <div id="rotate-overlay">
+    <div class="rotate-card">
+      <div class="phone-icon-box">
+        <svg class="phone-rotate-anim" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+        <div class="rotate-arrow">⟳</div>
+      </div>
+      <h2 class="rotate-title">PLEASE ROTATE YOUR DEVICE</h2>
+      <p class="rotate-desc">For the best gaming experience, please rotate your device horizontally.</p>
+      <button class="btn-rotate-fs" id="btn-request-fs">Fullscreen & Rotate</button>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="loader-card">
+      <div class="loading-logo-box">
+        <div class="rune-spinner"></div>
+        <div class="rune-spinner-inner"></div>
+        <div class="gem-icon">✨</div>
+      </div>
+      <div>
+        <h1 class="loading-title">TINH LINH KHOI NGUYEN</h1>
+        <p class="loading-subtitle" id="loader-msg">Loading WebAssembly & assets...</p>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="game-wrapper">
+    <!-- LibGDX Canvas Viewport Frame -->
+    <div id="canvas-frame">
+      <canvas id="canvas" tabindex="1"></canvas>
+    </div>
+  </div>
+
+  <!-- Mobile Virtual Keyboard Proxy Input -->
+  <input id="tlkn-keyboard-input"
+         type="text"
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"
+         inputmode="text"
+         tabindex="-1"
+         aria-hidden="true"
+         style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 1px; height: 1px; opacity: 0.001; pointer-events: none; border: none; outline: none; padding: 0; margin: 0; font-size: 16px; background: transparent; z-index: 100;" />
+
+  <!-- Mobile Floating "Xong" (Done) button while keyboard is open -->
+  <button id="tlkn-btn-keyboard-done"
+          type="button"
+          tabindex="-1"
+          style="display: none; position: fixed; top: max(12px, env(safe-area-inset-top, 12px)); right: max(12px, env(safe-area-inset-right, 12px)); z-index: 99999; background: rgba(20, 25, 35, 0.88); color: #4ade80; border: 1.5px solid rgba(74, 222, 128, 0.4); border-radius: 20px; padding: 7px 16px; font-size: 14px; font-weight: 600; font-family: -apple-system, BlinkMacSystemFont, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 4px 16px rgba(0,0,0,0.5); cursor: pointer;">
+    ✓ Done
+  </button>
+
+  <!-- Client Network & UI Scripts -->
+  <script>
+    // =========================================================================
+    // WebSocket Server URL Configuration (change the URL WITHOUT REBUILDING)
+    // =========================================================================
+    // By default the game reads it from client.properties (server.ws.url).
+    // When deploying the web build to a server / VPS / Nginx SSL (WSS),
+    // you can change the connection URL here without recompiling app.js:
+    // window.TLKN_WS_URL = "wss://example.com/ws";
+    // Or open the page with a param: https://your-game.com/?ws=wss://example.com/ws
+    // =========================================================================
+
+    // =========================================================================
+    // Clear game data & reload the page (IndexedDB, Caches, Preferences)
+    // =========================================================================
+    window.TLKN_CLEAR_DATA = function(preserveAccounts) {
+      if (preserveAccounts === undefined) preserveAccounts = true;
+      console.log('TLKN: clearing all web game data...');
+
+      var done = false;
+      function reloadPage() {
+        if (done) return;
+        done = true;
+        console.log('TLKN: game data cleared, reloading the page...');
+        window.location.reload();
+      }
+
+      // Safety limit: reload after at most 2 seconds whether or not the browser responds
+      setTimeout(reloadPage, 2000);
+
+      // 1. Wipe the FILE_DATA ObjectStore in IndexedDB (db/assets)
+      try {
+        if (window.indexedDB) {
+          var req = window.indexedDB.open('db/assets');
+          req.onsuccess = function(e) {
+            var db = e.target.result;
+            try {
+              if (db.objectStoreNames.contains('FILE_DATA')) {
+                var tx = db.transaction('FILE_DATA', 'readwrite');
+                tx.objectStore('FILE_DATA').clear();
+                tx.oncomplete = function() {
+                  db.close();
+                  step2();
+                };
+                tx.onerror = function() {
+                  db.close();
+                  step2();
+                };
+                return;
+              }
+            } catch(err) {
+              console.warn('Failed to clear FILE_DATA store:', err);
+            }
+            db.close();
+            step2();
+          };
+          req.onerror = function() {
+            step2();
+          };
+        } else {
+          step2();
+        }
+      } catch(err) {
+        step2();
+      }
+
+      function step2() {
+        // 2. Try to delete the db/assets database entirely
+        try {
+          if (window.indexedDB && window.indexedDB.deleteDatabase) {
+            window.indexedDB.deleteDatabase('db/assets');
+          }
+        } catch(e) {}
+
+        // 3. Delete other IndexedDB databases if any
+        try {
+          if (window.indexedDB && window.indexedDB.databases) {
+            window.indexedDB.databases().then(function(dbs) {
+              if (dbs) {
+                dbs.forEach(function(d) {
+                  if (d.name && (d.name === 'db/assets' || d.name.indexOf('asset') !== -1)) {
+                    try { window.indexedDB.deleteDatabase(d.name); } catch(err) {}
+                  }
+                });
+              }
+            }).catch(function() {});
+          }
+        } catch(e) {}
+
+        // 4. Clear CacheStorage (ServiceWorker caches if any)
+        try {
+          if (window.caches && window.caches.keys) {
+            window.caches.keys().then(function(keys) {
+              keys.forEach(function(k) { window.caches.delete(k); });
+            }).catch(function() {});
+          }
+        } catch(e) {}
+
+        // 5. Clear localStorage (saved accounts are kept when preserveAccounts=true)
+        try {
+          if (window.localStorage) {
+            var keysToRemove = [];
+            for (var i = 0; i < window.localStorage.length; i++) {
+              var k = window.localStorage.key(i);
+              if (k) {
+                if (preserveAccounts && (k.indexOf('account') !== -1 || k.indexOf('user') !== -1)) {
+                  continue;
+                }
+                keysToRemove.push(k);
+              }
+            }
+            keysToRemove.forEach(function(k) { window.localStorage.removeItem(k); });
+          }
+        } catch(e) {}
+
+        // 6. Clear sessionStorage
+        try {
+          if (window.sessionStorage) window.sessionStorage.clear();
+        } catch(e) {}
+
+        setTimeout(reloadPage, 250);
+      }
+    };
+
+    // =========================================================================
+    // Mobile Virtual Keyboard Bridge for TeaVM LibGDX
+    // =========================================================================
+    (function() {
+      const input = document.getElementById('tlkn-keyboard-input');
+      const doneBtn = document.getElementById('tlkn-btn-keyboard-done');
+      let active = false;
+
+      // Only mobile/touch devices need the virtual keyboard proxy input
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                             (navigator.maxTouchPoints > 1 && !window.MSStream);
+
+      window.TLKN_KEYBOARD = {
+        isActive: function() {
+          return active;
+        },
+
+        show: function(currentText, isPassword, inputMode) {
+          // On PC desktop, virtual keyboard proxy is unnecessary and causes key duplication
+          if (!isMobileDevice) {
+            return;
+          }
+          if (!input) return;
+          active = true;
+          input.type = isPassword ? 'password' : 'text';
+          input.inputMode = inputMode || (isPassword ? 'text' : 'text');
+          input.value = currentText || '';
+
+          if (doneBtn) doneBtn.style.display = 'block';
+
+          // Focus to summon mobile soft keyboard (synchronously in user touch stack)
+          try {
+            input.focus({ preventScroll: true });
+          } catch(e) {
+            input.focus();
+          }
+
+          try {
+            const len = input.value.length;
+            input.setSelectionRange(len, len);
+          } catch(e) {}
+        },
+
+        hide: function(fromGdx) {
+          if (!active) return;
+          active = false;
+          if (doneBtn) doneBtn.style.display = 'none';
+          if (input) {
+            try { input.blur(); } catch(e) {}
+            input.value = '';
+          }
+
+          // Reset page scroll position on mobile browser
+          try {
+            window.scrollTo(0, 0);
+            if (document.body) document.body.scrollTop = 0;
+            if (document.documentElement) document.documentElement.scrollTop = 0;
+          } catch(e) {}
+
+          // Return focus to game canvas
+          const canvas = document.getElementById('canvas');
+          if (canvas) {
+            try { canvas.focus({ preventScroll: true }); } catch(e) { try { canvas.focus(); } catch(e2) {} }
+          }
+
+          if (window.tlknSetKeyboardInsets) {
+            try { window.tlknSetKeyboardInsets(0); } catch(e) {}
+          }
+          if (!fromGdx && window.tlknClearKeyboardFocus) {
+            try { window.tlknClearKeyboardFocus(); } catch(e) {}
+          }
+        }
+      };
+
+      if (doneBtn) {
+        function onDone(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          window.TLKN_KEYBOARD.hide(false);
+        }
+        doneBtn.addEventListener('click', onDone);
+        doneBtn.addEventListener('touchend', onDone);
+      }
+
+      if (input) {
+        // Direct text sync: whatever is in the input directly updates LibGDX TextField without diffing or duplication
+        input.addEventListener('input', function(e) {
+          if (!active) return;
+          if (window.tlknSetTextFieldText) {
+            window.tlknSetTextFieldText(input.value);
+          }
+        });
+
+        // Handle Enter / Return key (dismiss keyboard cleanly on mobile)
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.keyCode === 13) {
+            e.preventDefault();
+            e.stopPropagation();
+            window.TLKN_KEYBOARD.hide(false);
+          }
+        });
+
+        // When user hides keyboard via device back / swipe / tapping outside
+        input.addEventListener('blur', function() {
+          if (active) {
+            window.TLKN_KEYBOARD.hide(false);
+          }
+        });
+      }
+
+      // Track VisualViewport to adjust Scene2dScreen camera above keyboard
+      if (window.visualViewport) {
+        function onViewportChange() {
+          if (!active) {
+            if (window.tlknSetKeyboardInsets) {
+              window.tlknSetKeyboardInsets(0);
+            }
+            return;
+          }
+          const fullH = window.innerHeight;
+          const visH = window.visualViewport.height;
+          const kbHeight = Math.max(0, fullH - visH);
+          const fraction = kbHeight / fullH;
+          if (window.tlknSetKeyboardInsets) {
+            window.tlknSetKeyboardInsets(fraction > 0.12 ? fraction : 0);
+          }
+        }
+        window.visualViewport.addEventListener('resize', onViewportChange);
+      }
+    })();
+
+    // Request Fullscreen & Landscape Orientation Lock (when the button on the rotate prompt is pressed)
+    function requestFullscreenAndLandscape() {
+      const doc = document.documentElement;
+      const requestFS = doc.requestFullscreen || doc.webkitRequestFullscreen || doc.mozRequestFullScreen || doc.msRequestFullscreen;
+
+      if (requestFS && !document.fullscreenElement && !document.webkitFullscreenElement) {
+        requestFS.call(doc).then(() => {
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {});
+          }
+        }).catch(() => {});
+      } else if (screen.orientation && screen.orientation.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+      }
+    }
+
+    document.getElementById('btn-request-fs')?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      requestFullscreenAndLandscape();
+    });
+
+    // When the soft keyboard opens, browsers without interactive-widget support shrink the window height -> gdx-teavm resizes the
+    // canvas and the game recomputes the zoom = the screen gets magnified. Registered BEFORE gdx-teavm (main() runs on load) so it can block it:
+    // while typing, if only the height shrinks (same width), swallow the resize event and keep the old size.
+    (function () {
+      let keptW = window.innerWidth, keptH = window.innerHeight;
+      window.addEventListener('resize', function (e) {
+        const w = window.innerWidth, h = window.innerHeight;
+        const typing = window.TLKN_KEYBOARD && window.TLKN_KEYBOARD.isActive();
+        if (typing && w === keptW && h < keptH) {
+          e.stopImmediatePropagation();
+          return;
+        }
+        keptW = w;
+        keptH = h;
+      });
+    })();
+
+    // Phones: the first touch switches to fullscreen (hides the address bar). Browsers only allow fullscreen
+    // on a user gesture. iPhone Safari has no Fullscreen API -> use "Add to Home Screen" (manifest display=fullscreen).
+    (function () {
+      const mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+        || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+      const doc = document.documentElement;
+      if (!mobile || /[?&]fs=0\b/.test(location.search)
+        || !(doc.requestFullscreen || doc.webkitRequestFullscreen)) return;
+      function onFirstTouch() {
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+          requestFullscreenAndLandscape();
+        }
+      }
+      document.addEventListener('touchend', onFirstTouch, { passive: true });
+    })();
+
+    // Hide loader once app starts rendering
+    let gameLoaded = false;
+    function onGameStarted() {
+      if (!gameLoaded) {
+        gameLoaded = true;
+        setTimeout(() => {
+          const overlay = document.getElementById('loading-overlay');
+          if (overlay) overlay.classList.add('fade-out');
+        }, 600);
+      }
+    }
+
+    // Auto dismiss loader after 4.5s max as fallback
+    setTimeout(onGameStarted, 4500);
+
+    async function start() {
+      const msg = document.getElementById('loader-msg');
+      if (msg) msg.textContent = 'Loading WebAssembly & physics modules...';
+
+      let retries = 0;
+      while (retries < 200) {
+        const box2dReady = typeof window.Box2D === 'object' && typeof window.Box2D.b2Vec2 === 'function';
+        const gdxReady = typeof window.Gdx === 'object' && typeof window.Gdx._malloc === 'function';
+        const freetypeReady = typeof window.Module === 'object' && typeof window.Module._c_FreeType_initFreeTypeJni === 'function';
+        if (box2dReady && gdxReady && freetypeReady) {
+          break;
+        }
+        await new Promise(r => setTimeout(r, 50));
+        retries++;
+      }
+
+      console.log('All WebAssembly & native modules are ready!');
+      if (msg) msg.textContent = 'Starting the game...';
+      if (typeof main === 'function') {
+        main();
+        onGameStarted();
+      }
+    }
+
+    window.addEventListener('load', start);
+  </script>
+
+  <!-- Performance measurement (only runs when the URL has ?perf) -->
+  <script type="text/javascript" charset="utf-8" src="perf.js"></script>
+  <!-- Safari: upload vertices with bufferSubData instead of bufferData on every draw call (disable: ?glfix=0) -->
+  <script type="text/javascript" charset="utf-8" src="glfix.js"></script>
+  <!-- Core Native & WebAssembly Engines -->
+  <script type="text/javascript" charset="utf-8" src="scripts/howler.js"></script>
+  <script type="text/javascript" charset="utf-8" src="scripts/freetype.js"></script>
+  <script type="text/javascript" charset="utf-8" src="scripts/gdx.wasm.js"></script>
+  <script type="text/javascript" charset="utf-8" src="scripts/box2D.wasm.js"></script>
+  <!-- TeaVM Game Bundle -->
+  <script type="text/javascript" charset="utf-8" src="app.js?v=20261024_kb6"></script>
+</body>
+</html>

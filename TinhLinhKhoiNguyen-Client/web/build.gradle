@@ -1,0 +1,61 @@
+plugins {
+    id 'java-library'
+    id 'com.github.xpenatan.gdx-teavm' version "$gdxTeaVMVersion"
+}
+
+dependencies {
+    implementation(project(':core')) {
+        exclude group: 'com.badlogicgames.gdx', module: 'gdx-box2d'
+    }
+    implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+    implementation "com.badlogicgames.gdx:gdx-freetype:1.14.2"
+    implementation("com.badlogicgames.box2dlights:box2dlights:1.5") {
+        exclude group: 'com.badlogicgames.gdx', module: 'gdx-box2d'
+    }
+    implementation tasks.getByPath(':webLibsJar').outputs.files
+    implementation "com.github.xpenatan.gdx-teavm:backend-web:$gdxTeaVMVersion"
+    implementation "com.github.xpenatan.gdx-teavm:gdx-freetype-web:$gdxTeaVMVersion"
+    implementation("com.github.xpenatan.gdx-teavm:gdx-box2d-teavm:1.0.0-b6") {
+        exclude group: 'com.github.xpenatan.gdx-teavm', module: 'backend-teavm'
+    }
+}
+
+tasks.named('compileJava') {
+    dependsOn ':webLibsJar'
+}
+
+// Obfuscation (TeaVM Obfuscation & Minification)
+//   -Pobf=off: disable obfuscation (for debugging / readable stack traces in the browser).
+//   Default or -Pobf=on/mixed/ascii: enable obfuscation (obfuscated = true, BALANCED optimization, debugInformation and sourceMap off).
+def obfMode = (project.findProperty('obf') ?: 'on').toString()
+def obfOn = obfMode != 'off'
+
+gdxTeaVM {
+    assets("$rootDir/assets")
+
+    js {
+        mainClass.set('com.tlnt.web.WebLauncher')
+        obfuscated.set(obfOn)
+        optimization.set(obfOn ? org.teavm.gradle.api.OptimizationLevel.BALANCED : org.teavm.gradle.api.OptimizationLevel.NONE)
+        debugInformation.set(!obfOn)
+        sourceMap.set(!obfOn)
+    }
+}
+
+tasks.register('copyWebAssets', Copy) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from 'webapp'
+    into layout.buildDirectory.dir('dist/js/webapp')
+}
+
+afterEvaluate {
+    if (tasks.findByName('gdx_teavm_web_js_build') != null) {
+        tasks.named('gdx_teavm_web_js_build').configure {
+            doFirst {
+                println ">> Web (TeaVM): lam roi ma = ${obfOn ? 'BAT (' + obfMode + ')' : 'tat (debug)'} | toi uu = ${obfOn ? 'BALANCED' : 'NONE'}"
+            }
+            finalizedBy 'copyWebAssets'
+        }
+    }
+}
+

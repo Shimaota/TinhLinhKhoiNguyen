@@ -1,0 +1,33 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+rootProject.name = 'TLNT-LIBGDX'
+
+include 'core', 'desktop', 'web'
+
+// Android needs an SDK (client.properties sdk.dir or ANDROID_HOME). The module is skipped when it is missing
+// so the desktop build still works on machines without the Android SDK.
+def clientProps = new Properties()
+def cp = new File(rootDir, 'client.properties')
+if (!cp.exists()) cp = new File(rootDir, 'client.properties.example')
+if (cp.exists()) {
+    try {
+        cp.withInputStream { clientProps.load(it) }
+    } catch (Exception ignored) {}
+}
+def sdkDir = clientProps.getProperty('sdk.dir') ?: System.getenv('ANDROID_HOME') ?: System.getenv('ANDROID_SDK_ROOT')
+if (sdkDir) {
+    if (!System.getenv('ANDROID_HOME') && !System.getProperty('android.home')) {
+        System.setProperty('android.home', sdkDir)
+    }
+    include 'android'
+}
+
+// iOS module is always configured (so it shows up in the IDE); the RoboVM native tasks
+// (launch*/createIPA) only run on macOS with Xcode.
+include 'ios'

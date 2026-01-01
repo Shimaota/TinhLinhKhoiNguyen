@@ -1,0 +1,130 @@
+plugins { id 'com.android.application' }
+
+configurations { natives }
+
+android {
+    namespace 'com.tlnt.android'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId appId
+        minSdk 26   // core uses java.util.Base64 (API 26+)
+        targetSdk 35
+        versionCode appVersionCode as int
+        versionName appVersionName
+        multiDexEnabled true
+        // App name = game.name in client.properties (renaming does not require editing res/values/strings.xml)
+        resValue "string", "app_name", rootProject.ext.clientConfigValue("game.name", "Tinh Linh Khoi Nguyen")
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src/main/java']
+            res.srcDirs = ['res']
+            assets.srcDirs = [rootProject.layout.buildDirectory.dir('merged-assets').get().asFile]
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packaging {
+        resources {
+            excludes += ['META-INF/**', '**/*.dll', '**/*.dylib', 'sfd.ser']
+            pickFirsts += ['**/*.so']
+        }
+    }
+
+    // Release APK signing: android/keystore.properties (storeFile, storePassword, keyAlias, keyPassword) or -PtlntStoreFile=...
+    // Without it the output is android-release-unsigned.apk (cannot be installed). Keep the .jks + passwords safe: losing them means you can no longer ship updates over the installed app.
+    def ksProps = new Properties()
+    def ksFile = file('keystore.properties')
+    if (ksFile.exists()) ksFile.withInputStream { ksProps.load(it) }
+    def ksValue = { String fileKey, String propKey -> ksProps.getProperty(fileKey) ?: project.findProperty(propKey) }
+    def hasSigning = ksValue('storeFile', 'tlntStoreFile') != null
+    signingConfigs {
+        if (hasSigning) {
+            release {
+                storeFile file(ksValue('storeFile', 'tlntStoreFile'))
+                storePassword ksValue('storePassword', 'tlntStorePassword')
+                keyAlias ksValue('keyAlias', 'tlntKeyAlias')
+                keyPassword ksValue('keyPassword', 'tlntKeyPassword')
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            // R8: obfuscate ONLY our own code (com.tlnt.**, com.shimaota.**), libraries stay untouched — rules in proguard-rules.pro.
+            // Mapping for reading stack traces: android/build/outputs/mapping/release/mapping.txt (keep one per release).
+            // -Pobf=off: release build without obfuscation (for debugging).
+            minifyEnabled((project.findProperty('obf') ?: 'on').toString() != 'off')
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasSigning) signingConfig signingConfigs.release
+        }
+    }
+
+
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+dependencies {
+    implementation project(':core')
+    implementation files(rootProject.layout.buildDirectory.file('libs/tlnt-libs-mobile.jar')) {
+        builtBy ':mobileLibsJar'
+    }
+    // Maven libraries (box2dlights, okhttp, okio): core is compileOnly, so if they are missing here the APK crashes with
+    // NoClassDefFoundError: box2dLight/RayHandler right at startup (same as the old desktop bug).
+    if (rootProject.ext.has('mavenLibs')) {
+        rootProject.ext.mavenLibs.each { dep ->
+            implementation(dep) { exclude group: rootProject.ext.mavenLibsExcludedGroup }
+        }
+    }
+
+    // libGDX core classes come from tlnt-libs-mobile.jar (the exact binaries the client shipped).
+    implementation("com.badlogicgames.gdx:gdx-backend-android:$gdxVersion") {
+        exclude group: 'com.badlogicgames.gdx', module: 'gdx'
+        exclude group: 'com.badlogicgames.gdx', module: 'gdx-jnigen-loader'
+    }
+
+    ['armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'].each { abi ->
+        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-$abi"
+        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-$abi"
+        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-$abi"
+    }
+}
+
+// Unpack the libGDX .so files into android/libs/<abi>/ (picked up via jniLibs.srcDirs).
+tasks.register('copyAndroidNatives') {
+    def outRoot = file('libs')
+    inputs.files(configurations.natives)
+    outputs.dir(outRoot)
+    doFirst {
+        configurations.natives.copy().files.each { jar ->
+            def abi = ['armeabi-v7a', 'arm64-v8a', 'x86_64', 'x86'].find { jar.name.endsWith("natives-${it}.jar") }
+            if (abi != null) {
+                copy {
+                    from zipTree(jar)
+                    into new File(outRoot, abi)
+                    include '*.so'
+                }
+            }
+        }
+    }
+}
+
+tasks.matching { it.name.contains('merge') && it.name.contains('JniLibFolders') }.configureEach {
+    dependsOn 'copyAndroidNatives'
+}
+tasks.matching { it.name.startsWith('merge') && it.name.endsWith('Assets') }.configureEach {
+    dependsOn ':mergedAssets'
+}
+preBuild.dependsOn ':mergedAssets', 'copyAndroidNatives'

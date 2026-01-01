@@ -1,0 +1,30 @@
+logo.png
+size:762,569
+filter:Linear,Linear
+climbing plants1
+bounds:139,2,293,206
+climbing plants2
+bounds:305,274,293,206
+rotate:90
+fang1
+bounds:517,13,70,103
+fang2
+bounds:2,6,41,77
+rotate:90
+leaf1
+bounds:517,118,223,243
+offsets:0,0,247,243
+rotate:90
+leaf2
+bounds:517,343,224,243
+offsets:24,0,248,243
+rotate:90
+rope
+bounds:434,4,268,81
+rotate:90
+text
+bounds:139,210,357,164
+rotate:90
+wood
+bounds:2,49,518,135
+rotate:90

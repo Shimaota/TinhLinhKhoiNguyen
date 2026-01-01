@@ -1,0 +1,352 @@
+diff --git a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/DefaultIOSInput.java b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/DefaultIOSInput.java
+index 5e89439..f65af16 100644
+--- a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/DefaultIOSInput.java
++++ b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/DefaultIOSInput.java
+@@ -177,7 +177,7 @@ public class DefaultIOSInput extends AbstractInput implements IOSInput {
+ 	}
+ 
+ 	protected void setupPressure () {
+-		UIForceTouchCapability forceTouchCapability = UIScreen.getMainScreen().getTraitCollection().getForceTouchCapability();
++		UIForceTouchCapability forceTouchCapability = app.uiWindowScene.getScreen().getTraitCollection().getForceTouchCapability();
+ 		pressureSupported = forceTouchCapability == UIForceTouchCapability.Available;
+ 	}
+ 
+diff --git a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSApplication.java b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSApplication.java
+index 0e600f6..e5f9557 100644
+--- a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSApplication.java
++++ b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSApplication.java
+@@ -21,19 +21,12 @@ import java.io.File;
+ import com.badlogic.gdx.ApplicationLogger;
+ import com.badlogic.gdx.backends.iosrobovm.objectal.OALIOSAudio;
+ import org.robovm.apple.coregraphics.CGRect;
++import org.robovm.apple.foundation.Foundation;
+ import org.robovm.apple.foundation.NSMutableDictionary;
+ import org.robovm.apple.foundation.NSObject;
+ import org.robovm.apple.foundation.NSProcessInfo;
+ import org.robovm.apple.foundation.NSString;
+-import org.robovm.apple.uikit.UIApplication;
+-import org.robovm.apple.uikit.UIApplicationDelegateAdapter;
+-import org.robovm.apple.uikit.UIApplicationLaunchOptions;
+-import org.robovm.apple.uikit.UIDevice;
+-import org.robovm.apple.uikit.UIUserInterfaceIdiom;
+-import org.robovm.apple.uikit.UIPasteboard;
+-import org.robovm.apple.uikit.UIScreen;
+-import org.robovm.apple.uikit.UIViewController;
+-import org.robovm.apple.uikit.UIWindow;
++import org.robovm.apple.uikit.*;
+ import org.robovm.rt.bro.Bro;
+ 
+ import com.badlogic.gdx.Application;
+@@ -64,29 +57,51 @@ public class IOSApplication implements Application {
+ 		}
+ 
+ 		@Override
+-		public void didBecomeActive (UIApplication application) {
+-			app.didBecomeActive(application);
++		public void willTerminate (UIApplication application) {
++			app.willTerminate(application);
+ 		}
+ 
+ 		@Override
+-		public void willEnterForeground (UIApplication application) {
+-			app.willEnterForeground(application);
++		public UISceneConfiguration getConfigurationForConnectingSceneSession (UIApplication application,
++			UISceneSession connectingSceneSession, UISceneConnectionOptions options) {
++			// Exit callback if it comes from screen mirroring initialization (see https://developer.apple.com/forums/thread/815376)
++			if (Foundation.getMajorSystemVersion() < 16) {
++				if (connectingSceneSession.getRole() == UISceneSessionRole.ExternalDisplay) {
++					return null;
++				}
++			} else {
++				if (connectingSceneSession.getRole() == UISceneSessionRole.ExternalDisplayNonInteractive) {
++					return null;
++				}
++			}
++			UISceneConfiguration config = new UISceneConfiguration(null, connectingSceneSession.getRole());
++			config.setDelegateClass(IOSSceneDelegate.class);
++			return config;
+ 		}
+ 
+-		@Override
+-		public void willResignActive (UIApplication application) {
+-			app.willResignActive(application);
++		public void willConnect (UIScene scene, UISceneSession session, UISceneConnectionOptions connectionOptions) {
+ 		}
+ 
+-		@Override
+-		public void willTerminate (UIApplication application) {
+-			app.willTerminate(application);
++		public void sceneDidBecomeActive (UIScene scene) {
++		}
++
++		public void sceneWillResignActive (UIScene scene) {
++		}
++
++		public void sceneWillEnterForeground (UIScene scene) {
++		}
++
++		public void sceneDidEnterBackground (UIScene scene) {
++		}
++
++		public void sceneDidDisconnect (UIScene scene) {
+ 		}
+ 	}
+ 
+ 	static final boolean IS_METALANGLE = false;
+ 
+ 	UIApplication uiApp;
++	UIWindowScene uiWindowScene;
+ 	UIWindow uiWindow;
+ 	ApplicationListener listener;
+ 	IOSViewControllerListener viewControllerListener;
+@@ -124,42 +139,19 @@ public class IOSApplication implements Application {
+ 		Gdx.app.debug("IOSApplication", "iOS version: " + UIDevice.getCurrentDevice().getSystemVersion());
+ 		Gdx.app.debug("IOSApplication", "Running in " + (Bro.IS_64BIT ? "64-bit" : "32-bit") + " mode");
+ 
+-		// iOS counts in "points" instead of pixels. Points are logical pixels
+-		pixelsPerPoint = (float)UIScreen.getMainScreen().getNativeScale();
+-		Gdx.app.debug("IOSApplication", "Pixels per point: " + pixelsPerPoint);
+-
+-		this.uiWindow = new UIWindow(UIScreen.getMainScreen().getBounds());
+-		this.uiWindow.makeKeyAndVisible();
+-		uiApp.getDelegate().setWindow(uiWindow);
+-
+-		// setup libgdx
++		// setup libgdx (graphics are created once the scene connects, see handleSceneConnection)
+ 		this.input = createInput();
+-		this.graphics = createGraphics();
+-		Gdx.gl = Gdx.gl20 = graphics.gl20;
+-		Gdx.gl30 = graphics.gl30;
+ 		this.files = createFiles();
+ 		this.audio = createAudio(config);
+ 		this.net = new IOSNet(this, config);
+ 
+ 		Gdx.files = this.files;
+-		Gdx.graphics = this.graphics;
+ 		Gdx.audio = this.audio;
+ 		Gdx.input = this.input;
+ 		Gdx.net = this.net;
+ 
+-		this.input.setupPeripherals();
+-
+-		this.uiWindow.setRootViewController(this.graphics.viewController);
+-		this.graphics.updateSafeInsets();
+-
+ 		Gdx.app.debug("IOSApplication", "created");
+ 
+-		listener.create();
+-		listener.resize(this.graphics.getWidth(), this.graphics.getHeight());
+-
+-		// make sure the OpenGL view has contents before displaying it
+-		this.graphics.view.display();
+-
+ 		return true;
+ 	}
+ 
+@@ -210,9 +202,11 @@ public class IOSApplication implements Application {
+ 	 * @return logical dimensions of space we draw to, adjusted for device orientation */
+ 	protected IOSScreenBounds computeBounds () {
+ 		CGRect screenBounds = uiWindow.getBounds();
+-		final CGRect statusBarFrame = uiApp.getStatusBarFrame();
+-		double statusBarHeight = statusBarFrame.getHeight();
+-
++		double statusBarHeight = 0.0;
++		UIStatusBarManager uiStatusBarManager = uiWindowScene.getStatusBarManager();
++		if (uiStatusBarManager != null) {
++			statusBarHeight = uiStatusBarManager.getStatusBarFrame().getHeight();
++		}
+ 		double screenWidth = screenBounds.getWidth();
+ 		double screenHeight = screenBounds.getHeight();
+ 
+@@ -245,18 +239,46 @@ public class IOSApplication implements Application {
+ 			return lastScreenBounds;
+ 	}
+ 
+-	final void didBecomeActive (UIApplication uiApp) {
++	final void handleSceneConnection (UIWindowScene scene) {
++		this.uiWindowScene = scene;
++		this.uiWindow = new UIWindow(scene);
++		this.uiWindow.makeKeyAndVisible();
++		((UIWindowSceneDelegate)scene.getDelegate()).setWindow(uiWindow);
++
++		// iOS counts in "points" instead of pixels. Points are logical pixels
++		pixelsPerPoint = (float)uiWindowScene.getScreen().getNativeScale();
++		Gdx.app.debug("IOSApplication", "Pixels per point: " + pixelsPerPoint);
++
++		this.graphics = createGraphics();
++		Gdx.gl = Gdx.gl20 = graphics.gl20;
++		Gdx.gl30 = graphics.gl30;
++		Gdx.graphics = this.graphics;
++
++		this.uiWindow.setRootViewController(this.graphics.viewController);
++		this.graphics.updateSafeInsets();
++
++		this.input.setupPeripherals();
++
++		listener.create();
++		listener.resize(this.graphics.getWidth(), this.graphics.getHeight());
++
++		// make sure the OpenGL view has contents before displaying it
++		this.graphics.view.display();
++
++	}
++
++	final void didBecomeActive (UIScene uiScene) {
+ 		Gdx.app.debug("IOSApplication", "resumed");
+ 		audio.didBecomeActive();
+ 		graphics.makeCurrent();
+ 		graphics.resume();
+ 	}
+ 
+-	final void willEnterForeground (UIApplication uiApp) {
++	final void willEnterForeground (UIScene uiScene) {
+ 		audio.willEnterForeground();
+ 	}
+ 
+-	final void willResignActive (UIApplication uiApp) {
++	final void willResignActive (UIScene uiScene) {
+ 		Gdx.app.debug("IOSApplication", "paused");
+ 		audio.willResignActive();
+ 		graphics.makeCurrent();
+@@ -267,7 +289,10 @@ public class IOSApplication implements Application {
+ 	final void willTerminate (UIApplication uiApp) {
+ 		Gdx.app.debug("IOSApplication", "disposed");
+ 		audio.willTerminate();
+-		graphics.makeCurrent();
++		// willTerminate can be called before a scene is connected and graphics initialized
++		if (graphics != null) {
++			graphics.makeCurrent();
++		}
+ 		Array<LifecycleListener> listeners = lifecycleListeners;
+ 		synchronized (listeners) {
+ 			for (LifecycleListener listener : listeners) {
+@@ -275,7 +300,9 @@ public class IOSApplication implements Application {
+ 			}
+ 		}
+ 		listener.dispose();
+-		Gdx.gl.glFinish();
++		if (graphics != null) {
++			Gdx.gl.glFinish();
++		}
+ 	}
+ 
+ 	@Override
+@@ -399,7 +426,9 @@ public class IOSApplication implements Application {
+ 	public void postRunnable (Runnable runnable) {
+ 		synchronized (runnables) {
+ 			runnables.add(runnable);
+-			Gdx.graphics.requestRendering();
++			if (Gdx.graphics != null) {
++				Gdx.graphics.requestRendering();
++			}
+ 		}
+ 	}
+ 
+diff --git a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSGraphics.java b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSGraphics.java
+index ef644bd..8ac2e40 100644
+--- a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSGraphics.java
++++ b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSGraphics.java
+@@ -46,7 +46,6 @@ import org.robovm.apple.opengles.EAGLContext;
+ import org.robovm.apple.opengles.EAGLRenderingAPI;
+ import org.robovm.apple.uikit.UIEdgeInsets;
+ import org.robovm.apple.uikit.UIEvent;
+-import org.robovm.apple.uikit.UIScreen;
+ import org.robovm.objc.annotation.Method;
+ import org.robovm.rt.bro.annotation.Pointer;
+ 
+@@ -146,7 +145,7 @@ public class IOSGraphics extends AbstractGraphics {
+ 
+ 		int preferredFps;
+ 		if (config.preferredFramesPerSecond == 0) {
+-			preferredFps = (int)(UIScreen.getMainScreen().getMaximumFramesPerSecond());
++			preferredFps = (int)app.uiWindowScene.getScreen().getMaximumFramesPerSecond();
+ 		} else {
+ 			preferredFps = config.preferredFramesPerSecond;
+ 		}
+diff --git a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSHaptics.java b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSHaptics.java
+index 82140f1..25a7071 100644
+--- a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSHaptics.java
++++ b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSHaptics.java
+@@ -29,7 +29,6 @@ import org.robovm.apple.foundation.NSArray;
+ import org.robovm.apple.foundation.NSError;
+ import org.robovm.apple.foundation.NSErrorException;
+ import org.robovm.apple.foundation.NSObject;
+-import org.robovm.apple.foundation.NSProcessInfo;
+ import org.robovm.apple.uikit.UIDevice;
+ import org.robovm.apple.uikit.UIImpactFeedbackGenerator;
+ import org.robovm.apple.uikit.UIImpactFeedbackStyle;
+@@ -44,35 +43,33 @@ public class IOSHaptics {
+ 
+ 	public IOSHaptics (boolean useHaptics) {
+ 		vibratorSupport = useHaptics && UIDevice.getCurrentDevice().getUserInterfaceIdiom() == UIUserInterfaceIdiom.Phone;
+-		if (NSProcessInfo.getSharedProcessInfo().getOperatingSystemVersion().getMajorVersion() >= 13) {
+-			hapticsSupport = useHaptics && CHHapticEngine.capabilitiesForHardware().supportsHaptics();
+-			if (hapticsSupport) {
+-				try {
+-					hapticEngine = new CHHapticEngine();
+-				} catch (NSErrorException e) {
+-					Gdx.app.error("IOSHaptics", "Error creating CHHapticEngine. Haptics will be disabled. " + e);
+-					hapticsSupport = false;
+-					return;
+-				}
+-				hapticEngine.setPlaysHapticsOnly(true);
+-				hapticEngine.setAutoShutdownEnabled(true);
+-				// The reset handler provides an opportunity to restart the engine.
+-				hapticEngine.setResetHandler(new Runnable() {
+-					@Override
+-					public void run () {
+-						// Try restarting the engine.
+-						hapticEngine.start(new VoidBlock1<NSError>() {
+-							@Override
+-							public void invoke (NSError nsError) {
+-								if (nsError != null) {
+-									Gdx.app.error("IOSHaptics", "Error restarting CHHapticEngine. Haptics will be disabled.");
+-									hapticsSupport = false;
+-								}
+-							}
+-						});
+-					}
+-				});
++		hapticsSupport = useHaptics && CHHapticEngine.capabilitiesForHardware().supportsHaptics();
++		if (hapticsSupport) {
++			try {
++				hapticEngine = new CHHapticEngine();
++			} catch (NSErrorException e) {
++				Gdx.app.error("IOSHaptics", "Error creating CHHapticEngine. Haptics will be disabled. " + e);
++				hapticsSupport = false;
++				return;
+ 			}
++			hapticEngine.setPlaysHapticsOnly(true);
++			hapticEngine.setAutoShutdownEnabled(true);
++			// The reset handler provides an opportunity to restart the engine.
++			hapticEngine.setResetHandler(new Runnable() {
++				@Override
++				public void run () {
++					// Try restarting the engine.
++					hapticEngine.start(new VoidBlock1<NSError>() {
++						@Override
++						public void invoke (NSError nsError) {
++							if (nsError != null) {
++								Gdx.app.error("IOSHaptics", "Error restarting CHHapticEngine. Haptics will be disabled.");
++								hapticsSupport = false;
++							}
++						}
++					});
++				}
++			});
+ 		}
+ 	}
+ 
+diff --git a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSUIViewController.java b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSUIViewController.java
+index ea406c9..0fc6a7f 100644
+--- a/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSUIViewController.java
++++ b/backends/gdx-backend-robovm/src/com/badlogic/gdx/backends/iosrobovm/IOSUIViewController.java
+@@ -33,7 +33,7 @@ public class IOSUIViewController extends GLKViewController {
+ 	@Override
+ 	public void viewDidAppear (boolean animated) {
+ 		super.viewDidAppear(animated);
+-		getView().setContentScaleFactor(UIScreen.getMainScreen().getNativeScale());
++		getView().setContentScaleFactor(app.uiWindowScene.getScreen().getNativeScale());
+ 		if (app.viewControllerListener != null) app.viewControllerListener.viewDidAppear(animated);
+ 	}
+ 

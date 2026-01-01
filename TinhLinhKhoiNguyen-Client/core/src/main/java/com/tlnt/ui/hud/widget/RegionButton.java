@@ -1,0 +1,51 @@
+package com.tlnt.ui.hud.widget;
+
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.tlnt.core.GameMain;
+import com.tlnt.core.audio.FontManager;
+import com.tlnt.engine.WorldConfig;
+import com.tlnt.engine.render.Anchor;
+import com.tlnt.engine.render.CompositeSprite;
+import com.tlnt.engine.render.RenderContext;
+import com.tlnt.ui.widget.ShapeButton;
+
+public final class RegionButton extends ShapeButton {
+   public CompositeSprite buttonSprite;
+
+   public RegionButton(RenderContext renderContext) {
+      super(renderContext);
+      String upPath = "ui/10";
+      String downPath = "ui/11";
+      this.buttonSprite = CompositeSprite.obtain(upPath, downPath, "ui/12", false);
+      this.setSize(169.0F, 63.0F);
+      boolean isIOS = Gdx.app.getType() == Application.ApplicationType.iOS;
+      float posX = (float)(WorldConfig.VIEWPORT_WIDTH - (isIOS ? 145 : 90));
+      float posY = (float)(WorldConfig.VIEWPORT_HEIGHT - (isIOS ? 30 : 15));
+      this.setPosition(posX, posY, 18);
+      this.addListener(new RegionButtonClickListener(this));
+   }
+
+   @Override
+   public final void draw(Batch batch, float parentAlpha) {
+      if (this.isPressed()) {
+         super.renderContext.setBatchColor(Color.LIGHT_GRAY);
+      }
+
+      super.renderContext.drawCompositeSprite(this.buttonSprite, this.getX(), this.getY(), this.getWidth(), this.getHeight(), Anchor.BOTTOM_LEFT);
+      super.renderContext
+         .drawText(
+            FontManager.DEFAULT_FONT,
+            "Khu vực " + GameMain.instance.getLoginScreen().editorViewport.skeleton,
+            this.getX() + this.getWidth() / 2.05F,
+            this.getY() + this.getHeight() / 1.8F,
+            Anchor.CENTER,
+            24.0F,
+            Color.WHITE
+         );
+      super.renderContext.resetBatchColor();
+   }
+
+}

@@ -1,0 +1,26 @@
+# Gradle / IDE / local machine
+.gradle/
+.idea/
+client.properties
+local.properties
+android/keystore.properties
+*.jks
+*.keystore
+
+# Build output
+**/build/
+**/target/
+
+# Generated and backup files
+*.log
+*.tmp
+*.bak
+
+# Classpath generated when running the load-test bots (TLNT-Server/docs/LOAD_TEST.md)
+TLNT-Server/cp.txt
+
+/release/*
+
+# VSCode Java extension build output
+**/bin/
+web/perf.log

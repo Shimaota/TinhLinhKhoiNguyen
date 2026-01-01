@@ -1,0 +1,25 @@
+package com.tlnt.ui.window.wardrobe.panel;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.utils.Pool;
+import com.tlnt.ui.hud.itemslot.ItemSlotButton;
+
+public final class PetItemPool extends Pool<ItemSlotButton> {
+   public com.tlnt.ui.window.wardrobe.panel.PetPanel.EquipGridPanel equipGridPanel;
+   public ButtonGroup<Button> buttonGroup;
+
+   public PetItemPool(PetPanel.EquipGridPanel panel) {
+      super();
+      this.equipGridPanel = panel;
+      this.buttonGroup = new ButtonGroup<>();
+   }
+
+   @Override
+   public final ItemSlotButton newObject() {
+      ItemSlotButton slotButton;
+      (slotButton = new ItemSlotButton(this.equipGridPanel.renderContext)).addListener(new PetItemClickListener(this, slotButton));
+      this.buttonGroup.add(slotButton);
+      return slotButton;
+   }
+}

@@ -1,0 +1,179 @@
+// iOS build (MobiVM / RoboVM). Configures everywhere; native tasks need macOS + Xcode.
+//   ./gradlew ios:launchIPhoneSimulator
+//   ./gradlew ios:launchIOSDevice
+//   ./gradlew ios:createIPA            (signing: robovm { iosSignIdentity / iosProvisioningProfile })
+plugins { id 'java' }
+apply plugin: 'robovm'
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(20) }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 8
+}
+
+ext {
+    mainClassName = 'com.tlnt.ios.IOSLauncher'
+}
+
+robovm {
+    // arm64 only: iOS 11+ dropped 32-bit apps (thumbv7) entirely, App Store / TestFlight reject builds containing thumbv7.
+    archs = 'arm64'
+}
+
+// robovm.properties (used by Info.plist.xml / robovm.xml as ${app.*}) is GENERATED from client.properties + gradle.properties like PC /
+// Android: app name = game.name, version = appVersionName, build number = appVersionCode, bundle id = appId (iOS-only override:
+// -Ptlnt.ios.bundleId=...). Properties.store writes \uXXXX so Vietnamese names stay correct when RoboVM reads them.
+tasks.register('syncIosProperties') {
+    def out = file('robovm.properties')
+    def values = [
+        'app.name'      : rootProject.ext.clientConfigValue('game.name', 'Tinh Linh Khoi Nguyen'),
+        'app.version'   : (rootProject.findProperty('appVersionName') ?: '0.0.0').toString(),
+        'app.build'     : (rootProject.findProperty('appVersionCode') ?: '1').toString(),
+        'app.id'        : (rootProject.findProperty('tlnt.ios.bundleId') ?: rootProject.findProperty('appId') ?: 'com.tlnt.game').toString(),
+        'app.mainclass' : 'com.tlnt.ios.IOSLauncher',
+        'app.executable': 'IOSLauncher'
+    ]
+    inputs.properties(values)
+    outputs.file(out)
+    doLast {
+        def props = new Properties()
+        values.each { k, v -> props.setProperty(k, v) }
+        out.withOutputStream { props.store(it, 'Sinh tu client.properties + gradle.properties (ios:syncIosProperties) - KHONG sua tay') }
+        println ">> iOS: ${values['app.name']} | ${values['app.id']} | ${values['app.version']} (${values['app.build']})"
+    }
+}
+tasks.named('compileJava') { dependsOn 'syncIosProperties' }
+
+def obfMode = (project.findProperty('obf') ?: 'mixed').toString()
+def obfOn = obfMode != 'off'
+
+dependencies {
+    // Core game:
+    //   - obf=off (debug): uses project(':core') directly, without ProGuard.
+    //   - obf on (default): compileJava uses compileOnly project(':core'); RoboVM uses core-obf.jar produced by obfJar.
+    if (obfOn) {
+        compileOnly project(':core')
+        runtimeOnly files(layout.buildDirectory.file('obf/core-obf.jar')) {
+            builtBy 'obfJar'
+        }
+    } else {
+        implementation project(':core')
+    }
+
+    implementation files(rootProject.layout.buildDirectory.file('libs/tlnt-libs-mobile.jar')) {
+        builtBy ':mobileLibsJar'
+    }
+    // Maven libraries (box2dlights, okhttp, okio): core is compileOnly, so if they are missing here the app crashes with
+    // NoClassDefFoundError: box2dLight/RayHandler right at startup (a bug already seen on desktop and Android).
+    if (rootProject.ext.has('mavenLibs')) {
+        rootProject.ext.mavenLibs.each { dep ->
+            implementation(dep) { exclude group: rootProject.ext.mavenLibsExcludedGroup }
+        }
+    }
+
+    implementation "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+    implementation "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
+    // libGDX core classes come from tlnt-libs-mobile.jar (the exact binaries the client shipped).
+    implementation("com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion") {
+        exclude group: 'com.badlogicgames.gdx', module: 'gdx'
+        exclude group: 'com.badlogicgames.gdx', module: 'gdx-jnigen-loader'
+    }
+    implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+    implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-ios"
+    implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+}
+
+// =============================================================================================
+//  OBFUSCATION (PROGUARD) FOR IOS (MobiVM / RoboVM)
+//
+//    gradlew ios:obfJar -> ios/build/obf/core-obf.jar + ios/build/obf/mapping.txt
+//
+//  ONLY obfuscates our own code (com.tlnt.**, com.shimaota.**) from :core; libraries stay untouched.
+//  Renaming style: -Pobf=mixed (default) | ascii | unicode | off.
+//  RoboVM AOT-compiles native ARM64 from the obfuscated core-obf.jar instead of the original classes.
+// =============================================================================================
+def toolchainJdk = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
+
+tasks.register('coreRawJar', Jar) {
+    archiveFileName = 'core-raw.jar'
+    destinationDirectory = layout.buildDirectory.dir('obf')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    dependsOn project(':core').tasks.named('compileJava')
+    from(project(':core').sourceSets.main.output.classesDirs)
+}
+
+tasks.register('obfJar', proguard.gradle.ProGuardTask) {
+    dependsOn 'coreRawJar'
+    injars tasks.named('coreRawJar').get().archiveFile
+    outjars layout.buildDirectory.file('obf/core-obf.jar')
+    libraryjars "${toolchainJdk}/jmods", jarfilter: '!**.jar', filter: '!module-info.class'
+    libraryjars configurations.compileClasspath.filter { f ->
+        f.name.endsWith('.jar') && !f.absolutePath.startsWith(project(':core').layout.buildDirectory.get().asFile.absolutePath)
+    }
+    configuration file('proguard-rules.pro')
+    printmapping layout.buildDirectory.file('obf/mapping.txt')
+
+    if (!obfOn) {
+        dontobfuscate()
+    } else {
+        def memSfx = (obfMode == 'unicode' || obfMode == 'mixed') ? '-unicode' : ''
+        def clsSfx = obfMode == 'unicode' ? '-unicode' : ''
+        obfuscationdictionary file("${rootDir}/desktop/obf/obf-members${memSfx}.txt")
+        classobfuscationdictionary file("${rootDir}/desktop/obf/obf-classes${clsSfx}.txt")
+        packageobfuscationdictionary file("${rootDir}/desktop/obf/obf-classes${clsSfx}.txt")
+    }
+    doFirst { println ">> iOS ProGuard: doi ten = ${obfMode} | toi uu = tat (an toan cho RoboVM)" }
+}
+
+def isMac = System.getProperty('os.name').toLowerCase().contains('mac')
+
+// iOS cannot read .ogg: convert sounds/*.ogg to .m4a (AAC) with macOS afconvert -> build/ios-audio/sounds/
+// (packaged by robovm.xml). OggToM4aAudio loads x.m4a instead of x.ogg at runtime.
+def iosAudioSrc = rootProject.layout.buildDirectory.dir('merged-assets/sounds')
+def iosAudioDir = layout.buildDirectory.dir('ios-audio')
+tasks.register('convertIosAudio') {
+    dependsOn ':mergedAssets'
+    onlyIf { isMac }
+    inputs.dir(iosAudioSrc)
+    outputs.dir(iosAudioDir)
+    doLast {
+        def out = iosAudioDir.get().dir('sounds').asFile
+        project.delete(out)
+        out.mkdirs()
+        iosAudioSrc.get().asFile.listFiles().findAll { it.name.endsWith('.ogg') }.each { f ->
+            project.exec { commandLine 'afconvert', '-f', 'm4af', '-d', 'aac', f.path, new File(out, f.name[0..-5] + '.m4a').path }
+        }
+    }
+}
+
+// App icon: RoboVM copies the Assets.xcassets folder as is (not compiled) -> iOS shows a blank icon. Compile it with actool
+// into build/ios-icons/ (Assets.car + AppIcon*.png), packaged by robovm.xml. To change the icon: replace the images in
+// data/Assets.xcassets/AppIcon.appiconset/ (keep the file names and the sizes listed in Contents.json).
+def iosIconSrc = file('data/Assets.xcassets')
+def iosIconDir = layout.buildDirectory.dir('ios-icons')
+tasks.register('compileIosIcons') {
+    onlyIf { isMac }
+    inputs.dir(iosIconSrc)
+    outputs.dir(iosIconDir)
+    doLast {
+        def out = iosIconDir.get().asFile
+        project.delete(out)
+        out.mkdirs()
+        project.exec {
+            commandLine 'xcrun', 'actool', iosIconSrc.path, '--compile', out.path, '--platform', 'iphoneos',
+                '--minimum-deployment-target', '12.0', '--app-icon', 'AppIcon', '--target-device', 'iphone',
+                '--target-device', 'ipad', '--output-partial-info-plist', layout.buildDirectory.file('ios-icons-partial.plist').get().asFile.path
+        }
+    }
+}
+
+tasks.matching { it.name.startsWith('launch') || it.name.startsWith('create') || it.name == 'robovmArchive' }.configureEach {
+    dependsOn ':mergedAssets', 'syncIosProperties', 'convertIosAudio', 'compileIosIcons'
+    if (obfOn) dependsOn 'obfJar'
+    if (!isMac) {
+        doFirst { throw new GradleException("iOS native build (${name}) requires macOS + Xcode. Java compilation (ios:compileJava) works anywhere.") }
+    }
+}

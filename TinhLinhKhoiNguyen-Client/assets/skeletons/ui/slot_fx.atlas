@@ -1,0 +1,39 @@
+slot_fx.png
+size:1229,121
+filter:Linear,Linear
+Comp 1/sweep_00000
+bounds:1167,51,60,68
+offsets:32,28,180,173
+Comp 1/sweep_00001
+bounds:1014,17,80,102
+offsets:32,28,180,173
+Comp 1/sweep_00002
+bounds:821,3,100,116
+offsets:32,28,180,173
+Comp 1/sweep_00003
+bounds:592,2,115,117
+offsets:32,28,180,173
+Comp 1/sweep_00004
+bounds:2,2,116,117
+offsets:32,28,180,173
+Comp 1/sweep_00005
+bounds:120,2,116,117
+offsets:32,28,180,173
+Comp 1/sweep_00006
+bounds:238,2,116,117
+offsets:32,28,180,173
+Comp 1/sweep_00007
+bounds:356,2,116,117
+offsets:32,28,180,173
+Comp 1/sweep_00008
+bounds:474,2,116,117
+offsets:32,28,180,173
+Comp 1/sweep_00009
+bounds:709,2,110,117
+offsets:38,28,180,173
+Comp 1/sweep_00010
+bounds:923,2,89,117
+offsets:59,28,180,173
+Comp 1/sweep_00011
+bounds:1096,5,69,114
+offsets:79,31,180,173

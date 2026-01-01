@@ -1,0 +1,18 @@
+package com.tlnt.ui.window.talent.panel;
+
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.tlnt.net.task.ServerPacketSender;
+
+public final class CostumeEquipActionListener extends ClickListener {
+   public com.tlnt.ui.window.talent.panel.CostumePanel.CostumeDetailPanel costumeDetailPanel;
+   public CostumeEquipActionListener(CostumePanel.CostumeDetailPanel detailPanel) {
+      super();
+      this.costumeDetailPanel = detailPanel;
+   }
+
+   @Override
+   public final void clicked(InputEvent event, float x, float y) {
+      ServerPacketSender.getInstance().sendDeleteCharacter();
+   }
+}

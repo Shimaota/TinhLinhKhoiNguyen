@@ -1,0 +1,134 @@
+// ============================================================================
+//  TLNT-LIBGDX  -  "Tinh Linh Khoi Nguyen"   (multi-platform build)
+//
+//  Modules (game code verified against the reference bytecode with tools/bcdiff):
+//    core     core/src/main/java  game code (Java 8 bytecode, no desktop APIs)
+//    desktop  desktop/src         LWJGL3 launcher                       -> PC
+//    android  AndroidLauncher                               -> APK / AAB
+//    ios      IOSLauncher (MobiVM)                          -> IPA (macOS only)
+//
+//  PC :  gradlew desktop:run | desktop:dist | desktop:packageWin
+//  APK:  gradlew android:assembleDebug | android:assembleRelease
+//  iOS:  ./gradlew ios:launchIPhoneSimulator | ios:createIPA      (on a Mac)
+// ============================================================================
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.9.3'
+        classpath "com.mobidevelop.robovm:robovm-gradle-plugin:$roboVMVersion"
+        classpath 'com.guardsquare:proguard-gradle:7.5.0' // obfuscate the PC build (desktop:obfJar)
+    }
+}
+
+allprojects {
+    version = appVersionName
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+ext {
+    fullLibsJar = file('libs/tlnt-libs.jar')
+    // Desktop-only content of the bundled runtime jar (LWJGL3 backend + desktop natives).
+    desktopOnlyPatterns = [
+        'org/lwjgl/**', 'com/badlogic/gdx/backends/lwjgl3/**', 'javazoom/**',
+        'META-INF/linux/**', 'META-INF/windows/**', 'META-INF/macos/**', 'META-INF/native-image/**',
+        'linux/**', 'windows/**', 'macos/**',
+        '*.dll', '*.so', '*.dylib', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/INDEX.LIST'
+    ]
+    // Assets the original client shipped inside the jar (desktop reads them from the classpath;
+    // Android/iOS need them as real asset files).
+    embeddedAssetPatterns = ['images/**', 'skeletons/**', 'fonts/**', 'sounds/**', 'skin/**', 'packs/**', 'sfd.ser', 'badlogic.jpg']
+
+    mavenLibs = [
+        "com.badlogicgames.box2dlights:box2dlights:1.5",
+        "com.squareup.okhttp3:okhttp:3.14.9"
+    ]
+    mavenLibsExcludedGroup = 'com.badlogicgames.gdx'
+}
+
+// Third-party classes usable on every platform (no LWJGL, no natives, no assets).
+tasks.register('mobileLibsJar', Jar) {
+    archiveFileName = 'tlnt-libs-mobile.jar'
+    destinationDirectory = layout.buildDirectory.dir('libs')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    // Leftovers of box2dlights/okhttp/okio (only pom + publicsuffixes.gz): Android/iOS use the Maven artifacts
+    // (mavenLibs); keeping them causes duplicate files when packaging the APK.
+    def mavenLibLeftovers = ['box2dLight/**', 'okhttp3/**', 'okio/**',
+                             'META-INF/maven/com.badlogicgames.box2dlights/**', 'META-INF/maven/com.squareup.okhttp3/**',
+                             'META-INF/maven/com.squareup.okio/**']
+    // Gradle does not track the excludes of from {...}: declare them so that changing the list rebuilds the jar.
+    inputs.property('excludes', desktopOnlyPatterns + embeddedAssetPatterns + mavenLibLeftovers)
+    from(zipTree(fullLibsJar)) {
+        exclude desktopOnlyPatterns
+        exclude embeddedAssetPatterns
+        exclude 'META-INF/MANIFEST.MF'
+        exclude mavenLibLeftovers
+    }
+}
+
+// Third-party classes for Web/TeaVM (no LWJGL, no natives, no assets, no gdx bytecode conflict, no kryonet).
+tasks.register('webLibsJar', Jar) {
+    archiveFileName = 'tlnt-libs-web.jar'
+    destinationDirectory = layout.buildDirectory.dir('libs')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    def webExcludes = desktopOnlyPatterns + embeddedAssetPatterns + [
+        'com/badlogic/gdx/**', 'com/esotericsoftware/kryonet/**',
+        'box2dLight/**', 'okhttp3/**', 'okio/**',
+        'META-INF/maven/com.badlogicgames.box2dlights/**', 'META-INF/maven/com.squareup.okhttp3/**',
+        'META-INF/maven/com.squareup.okio/**'
+    ]
+    inputs.property('excludes', webExcludes)
+    from(zipTree(fullLibsJar)) {
+        exclude webExcludes
+        exclude 'META-INF/MANIFEST.MF'
+    }
+}
+
+// Asset tree for Android/iOS: assets embedded in the jar, overlaid by assets/ (same precedence as the
+// desktop classpath order: assets/ first).
+tasks.register('mergedAssets', Sync) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from(zipTree(fullLibsJar)) { include embeddedAssetPatterns }
+    from('assets')
+    into layout.buildDirectory.dir('merged-assets')
+}
+
+// Overrides one client.properties key at build time, null = no override. Environment variable TLNT_<KEY> wins (e.g. TLNT_SERVER_NAME,
+// used by build.bat): Java reads environment variables as Unicode, so accented characters survive. -Ptlnt.<key> on the command line
+// gets characters outside the system code page (ở, ơ, ư...) turned into '?' by Windows -> use it only for ASCII values.
+ext.clientConfigOverride = { String key ->
+    def v = System.getenv('TLNT_' + key.toUpperCase().replace('.', '_')) ?: rootProject.findProperty('tlnt.' + key)
+    return v == null || v.toString().trim().isEmpty() ? null : v.toString().trim()
+}
+
+// client.properties MUST be read as UTF-8: if saved as ANSI, accented characters become '?' in game -> fail instead of building a broken client.
+ext.loadClientProperties = { File f ->
+    def props = new Properties()
+    if (!f.exists()) return props
+    def decoder = java.nio.charset.StandardCharsets.UTF_8.newDecoder()
+            .onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+            .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
+    try {
+        props.load(new StringReader(decoder.decode(java.nio.ByteBuffer.wrap(f.bytes)).toString()))
+    } catch (java.nio.charset.CharacterCodingException e) {
+        throw new GradleException("${f} khong phai UTF-8 (chu co dau se thanh '?'). Mo bang Notepad / VS Code, Save As chon UTF-8 roi build lai.")
+    }
+    return props
+}
+
+// client.properties values after overrides — shared by Android (app name) and the PC installer.
+ext.clientConfigValue = { String key, String fallback ->
+    def override = clientConfigOverride(key)
+    if (override != null) return override
+    def f = rootProject.file('client.properties')
+    if (!f.exists()) f = rootProject.file('client.properties.example')
+    def v = loadClientProperties(f).getProperty(key)
+    return v == null || v.trim().isEmpty() ? fallback : v.trim()
+}

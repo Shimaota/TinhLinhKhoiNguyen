@@ -1,0 +1,39 @@
+# ============================================================================
+#  Sample client configuration — copy this file to "client.properties"
+#  and adjust the values for your machine / server.
+#
+#  NOTES:
+#  - The file must be saved as UTF-8 (supports Vietnamese diacritics).
+#  - client.properties is in .gitignore so private settings are not committed.
+# ============================================================================
+
+# Android SDK path (used when building the APK / AAB):
+#   Windows: C:/Android/Sdk or C:\\Android\\Sdk (use / or \\)
+#   macOS / Linux: /Users/<user>/Library/Android/sdk or /home/<user>/Android/Sdk
+sdk.dir=C:/Android/Sdk
+
+# Game name: window title, Android app name, PC shortcut + installer
+game.name=Tinh Linh Khoi Nguyen
+
+# Data folder (downloaded data + settings):
+#   PC        C:\Users\<user>\AppData\LocalLow\<storage.folder>\
+#   Android   <external storage>/<storage.folder>/
+# Empty = use game.name. Do not use the characters \ / : * ? " < > |
+storage.folder=Tinh Linh Khoi Nguyen 2
+
+# Settings + saved accounts folder (PC): C:\Users\<user>\.<prefs.folder>\  (default C:\Users\<user>\.tlnt\)
+# SEPARATE from storage.folder: the in-game "Clear data" button wipes the whole data folder but accounts are NOT lost.
+# Write the name without the leading dot (added automatically); prefer ASCII. The first run of a new build copies old data over
+# (from AppData\LocalLow\<storage.folder>\settings\ or C:\Users\<user>\.prefs\).
+prefs.folder=tlnt
+
+# Settings file name prefix (e.g. "tlnt_" -> tlnt_setting, tlnt_account). Empty = legacy names.
+prefs.prefix=
+
+# Default server (when the player has not picked one). Phones: do NOT use localhost.
+server.name=TLNT1
+server.host=127.0.0.1
+server.port=7502
+# Server WebSocket URL (for the Web client)
+# Example: ws://127.0.0.1:7503/ws or wss://example.com/ws (wss:// is required when the web client is served over HTTPS)
+server.ws.url=ws://127.0.0.1:7503/ws

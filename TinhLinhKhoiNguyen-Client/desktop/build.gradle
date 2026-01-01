@@ -1,0 +1,225 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+ 
+
+java {
+    toolchain { languageVersion = JavaLanguageVersion.of(20) }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 8
+    options.compilerArgs += ['-Xlint:none', '-nowarn']
+}
+
+sourceSets {
+    main {
+        resources.srcDirs += ["$rootDir/assets"]
+    }
+}
+
+dependencies {
+    implementation project(':core')
+    implementation files(rootProject.ext.fullLibsJar)
+    if (rootProject.ext.has('mavenLibs')) {
+        rootProject.ext.mavenLibs.each { dep ->
+            implementation(dep) { exclude group: rootProject.ext.mavenLibsExcludedGroup }
+        }
+    }
+}
+
+application {
+    mainClass = 'com.shimaota.DesktopLauncher'
+    if (System.getProperty('os.name').toLowerCase().contains('mac')) {
+        applicationDefaultJvmArgs = ['-XstartOnFirstThread']
+    }
+}
+
+run {
+    workingDir = rootProject.projectDir
+    classpath = files("$rootDir/assets") + sourceSets.main.runtimeClasspath
+}
+
+// Runnable fat jar -> desktop/build/libs/TLNT.jar
+tasks.register('dist', Jar) {
+    archiveFileName = 'TLNT.jar'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest { attributes 'Main-Class': application.mainClass }
+    dependsOn ':core:classes', classes, configurations.runtimeClasspath
+    from sourceSets.main.output
+    from project(':core').sourceSets.main.output            // compiled game first: it wins
+    from(zipTree(rootProject.ext.fullLibsJar))
+    // Maven libraries (box2dlights, okhttp, okio...): the IDE has them on runtimeClasspath, but previously
+    // they were not merged into the jar -> the exe crashed with NoClassDefFoundError: box2dLight/RayHandler right at startup.
+    from {
+        configurations.runtimeClasspath
+            .filter { it.name.endsWith('.jar') && it != rootProject.ext.fullLibsJar }
+            .collect { zipTree(it) }
+    }
+    from("$rootDir/assets")
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/INDEX.LIST'
+}
+
+// Windows app folder with bundled JRE + TLNT.exe -> desktop/build/package/TLNT
+tasks.register('packageWin', Exec) {
+    dependsOn dist
+    def jdkHome = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
+    def outDir = layout.buildDirectory.dir('package').get().asFile
+    def inDir = layout.buildDirectory.dir('jpackage-input').get().asFile
+    doFirst {
+        delete new File(outDir, 'TLNT')
+        delete inDir
+        copy { from layout.buildDirectory.file('libs/TLNT.jar'); into inDir }
+    }
+    commandLine "$jdkHome/bin/jpackage",
+        '--type', 'app-image',
+        '--name', 'TLNT',
+        '--app-version', '1.0.0',
+        '--input', inDir.absolutePath,
+        '--main-jar', 'TLNT.jar',
+        '--main-class', 'com.shimaota.DesktopLauncher',
+        '--icon', "$rootDir/desktop/icon.ico",
+        '--java-options', '-Xms64m',
+        '--java-options', '-Xmx1g',
+        '--java-options', '-XX:G1PeriodicGCInterval=30000',
+        '--java-options', '-XX:MaxHeapFreeRatio=30',
+        '--java-options', '-Dfile.encoding=UTF-8',
+        '--dest', outDir.absolutePath
+}
+
+// =============================================================================================
+//  PC RELEASE — obfuscation (ProGuard) + trimmed JRE (jlink) + installer (Inno Setup)
+//
+//    gradlew desktop:distObf   -> desktop/build/dist/TLNT.jar          OBFUSCATED fat jar (requires Java 8+)
+//    gradlew desktop:exe       -> desktop/build/exe/TLNT/              TLNT.bat + app/ + runtime/ (no Java install needed)
+//    gradlew desktop:setup     -> desktop/build/setup/TLNT-Setup-<ver>.exe   (requires Inno Setup 6)
+//
+//  Only OUR classes (core + desktop) go through ProGuard (desktop/proguard.pro); libraries stay untouched.
+//  Renaming style: -Pobf=mixed (default: ASCII classes, Cyrillic + zero-width methods/fields) | ascii | unicode | off.
+//  Bytecode optimization: -Popt=on (off by default — core is decompiled code, test thoroughly if enabled).
+//  Mapping for stack traces: desktop/build/obf/mapping.txt — keep one per release.
+// =============================================================================================
+def ownProjects = [project(':core'), project]
+def toolchainJdk = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
+def appName = rootProject.ext.clientConfigValue('game.name', 'Tinh Linh Khoi Nguyen')
+def appVersion = (rootProject.findProperty('appVersionName') ?: '1.0').toString()
+def isOwnBuild = { File f -> ownProjects.any { f.absolutePath.startsWith(it.layout.buildDirectory.get().asFile.absolutePath) } }
+
+tasks.register('ownClassesJar', Jar) {
+    archiveFileName = 'own-classes.jar'
+    destinationDirectory = layout.buildDirectory.dir('obf')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    ownProjects.each { p ->
+        dependsOn p.tasks.named('compileJava') // no processResources needed (assets are merged directly in distObf)
+        from(p.sourceSets.main.output.classesDirs)
+    }
+}
+
+tasks.register('obfJar', proguard.gradle.ProGuardTask) {
+    dependsOn 'ownClassesJar'
+    injars tasks.named('ownClassesJar').get().archiveFile
+    outjars layout.buildDirectory.file('obf/own-classes-obf.jar')
+    libraryjars "${toolchainJdk}/jmods", jarfilter: '!**.jar', filter: '!module-info.class'
+    libraryjars files(rootProject.ext.fullLibsJar)
+    libraryjars configurations.runtimeClasspath.filter { f ->
+        f.name.endsWith('.jar') && f != rootProject.ext.fullLibsJar && !isOwnBuild(f)
+    }
+    configuration file('proguard.pro')
+    printmapping layout.buildDirectory.file('obf/mapping.txt')
+
+    def obfMode = (project.findProperty('obf') ?: 'mixed').toString()
+    if (obfMode == 'off') {
+        dontobfuscate()
+    } else {
+        def memSfx = (obfMode == 'unicode' || obfMode == 'mixed') ? '-unicode' : ''
+        def clsSfx = obfMode == 'unicode' ? '-unicode' : ''
+        obfuscationdictionary file("obf/obf-members${memSfx}.txt")
+        classobfuscationdictionary file("obf/obf-classes${clsSfx}.txt")
+        packageobfuscationdictionary file("obf/obf-classes${clsSfx}.txt")
+    }
+    def optOn = (project.findProperty('opt') ?: 'off').toString() == 'on'
+    if (optOn) {
+        optimizationpasses 3
+        optimizations '!code/simplification/arithmetic,!code/allocation/variable,!field/*,!class/merging/*'
+    } else {
+        dontoptimize()
+    }
+    doFirst { println ">> ProGuard: doi ten = ${obfMode} | toi uu = ${optOn ? 'BAT' : 'tat'}" }
+}
+
+// Release fat jar: obfuscated classes + client.properties + assets/ (takes priority, like the runtime classpath) + libraries.
+tasks.register('distObf', Jar) {
+    dependsOn 'obfJar', ':core:processResources'
+    archiveFileName = 'TLNT.jar'
+    destinationDirectory = layout.buildDirectory.dir('dist')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest { attributes 'Main-Class': application.mainClass, 'Implementation-Version': appVersion }
+    from(zipTree(layout.buildDirectory.file('obf/own-classes-obf.jar')))
+    from(project(':core').sourceSets.main.output.resourcesDir)
+    from("$rootDir/assets")
+    from(zipTree(rootProject.ext.fullLibsJar))
+    from({
+        configurations.runtimeClasspath.filter { f ->
+            f.name.endsWith('.jar') && f != rootProject.ext.fullLibsJar && !isOwnBuild(f)
+        }.collect { zipTree(it) }
+    }) {
+        exclude 'com/tlnt/**', 'com/shimaota/**' // the unobfuscated originals must not slip in
+    }
+    exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.EC', 'META-INF/INDEX.LIST', 'module-info.class'
+}
+
+// Bundled trimmed JRE (players do not need to install Java). tlnt.jlinkJdk = JDK used for jlink (defaults to toolchain 20).
+def jlinkJdk = (project.findProperty('tlnt.jlinkJdk') ?: toolchainJdk.absolutePath).toString()
+def exeDir = layout.buildDirectory.dir('exe/TLNT').get().asFile
+def runtimeDir = new File(exeDir, 'runtime')
+tasks.register('exeRuntime', Exec) {
+    // the runtime does not change between releases -> keep it for faster builds; -PfreshRuntime to recreate it
+    onlyIf { !new File(runtimeDir, 'bin/javaw.exe').exists() || project.hasProperty('freshRuntime') }
+    doFirst { project.delete(runtimeDir); exeDir.mkdirs() }
+    executable "${jlinkJdk}/bin/jlink"
+    // java.desktop (AWT/Swing, ImageIO), java.sql (jackson), jdk.crypto.ec (TLS for downloading data over https),
+    // java.net.http / java.naming / jdk.charsets / jdk.localedata: avoid missing modules at runtime.
+    args '--add-modules', 'java.base,java.desktop,java.logging,java.naming,java.net.http,java.prefs,java.sql,java.management,jdk.unsupported,jdk.zipfs,jdk.charsets,jdk.localedata,jdk.crypto.ec',
+         '--strip-debug', '--no-header-files', '--no-man-pages', '--compress', '2',
+         '--output', runtimeDir.path
+}
+
+tasks.register('exe', Sync) {
+    dependsOn 'distObf', 'exeRuntime'
+    into exeDir
+    preserve { include 'runtime/**' }
+    into('app') {
+        from(tasks.named('distObf').get().archiveFile)
+        from(file('icon.ico'))
+    }
+    from(file('launcher/TLNT.bat'))
+    // No client.properties next to the game anymore: configuration (game name, server...) only lives inside TLNT.jar at build time.
+    doLast { println "EXE: ${new File(exeDir, 'TLNT.bat')}" }
+}
+
+def iscc = (project.findProperty('tlnt.iscc') ?: "${System.getenv('LOCALAPPDATA')}/Programs/Inno Setup 6/ISCC.exe").toString()
+tasks.register('setup', Exec) {
+    dependsOn 'exe'
+    def outDir = layout.buildDirectory.dir('setup').get().asFile
+    def srcDir = layout.buildDirectory.dir('setup-src').get().asFile
+    doFirst {
+        if (!file(iscc).exists()) {
+            throw new GradleException("Khong thay Inno Setup: ${iscc}. Cai: winget install JRSoftware.InnoSetup")
+        }
+        outDir.mkdirs()
+        project.copy { from(file('setup.iss')); from(file('icon.ico')); into srcDir }
+        // Accented names: written to a UTF-8 BOM file (Windows re-encodes /D command-line arguments)
+        def bom = new String([0xFEFF] as int[], 0, 1)
+        def nl = System.lineSeparator()
+        new File(srcDir, 'appinfo.iss').setText(bom + [
+            "#define AppName \"${appName}\"",
+            "#define AppVersion \"${appVersion}\"",
+            "#define SrcDir \"${exeDir.path}\"",
+            "#define OutDir \"${outDir.path}\"" ].join(nl) + nl, 'UTF-8')
+    }
+    executable iscc
+    args '/Q', new File(srcDir, 'setup.iss').path
+    doLast { println "SETUP: ${outDir}/TLNT-Setup-${appVersion}.exe" }
+}
