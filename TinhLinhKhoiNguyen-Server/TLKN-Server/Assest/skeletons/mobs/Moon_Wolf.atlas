@@ -1,0 +1,72 @@
+Moon_Wolf.png
+size:593,142
+filter:Linear,Linear
+scale:0.5
+body
+bounds:336,60,144,80
+brown
+bounds:482,66,74,28
+rotate:90
+ear L
+bounds:188,5,30,58
+rotate:90
+ear R
+bounds:512,70,40,70
+eyebrown
+bounds:415,6,52,15
+offsets:0,0,52,16
+rotate:90
+eyes
+bounds:2,11,50,16
+offsets:0,1,51,18
+feet back L
+bounds:513,13,36,13
+feet back R
+bounds:551,13,36,13
+feet front L
+bounds:54,11,34,16
+feet front R
+bounds:90,11,34,16
+fur
+bounds:2,29,105,111
+head
+bounds:195,41,93,99
+offsets:0,9,98,108
+leg back 1 L
+bounds:476,7,35,51
+offsets:0,0,35,57
+leg back 1 R
+bounds:378,6,35,52
+offsets:0,0,35,57
+leg back 2 L
+bounds:126,2,33,29
+rotate:90
+leg back 2 R
+bounds:157,2,33,29
+rotate:90
+leg back 3 L
+bounds:554,112,28,27
+rotate:90
+leg back 3 R
+bounds:554,82,28,27
+rotate:90
+leg front 1 L
+bounds:513,28,38,40
+leg front 1 R
+bounds:553,28,38,40
+leg front 2 L
+bounds:248,2,36,37
+leg front 2 R
+bounds:286,2,36,37
+mouth
+bounds:432,7,51,42
+offsets:0,0,52,42
+rotate:90
+tail1
+bounds:290,50,90,44
+rotate:90
+tail2
+bounds:109,37,103,84
+rotate:90
+tail3
+bounds:324,2,52,46

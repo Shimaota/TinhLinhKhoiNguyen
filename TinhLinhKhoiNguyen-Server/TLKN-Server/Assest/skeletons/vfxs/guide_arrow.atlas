@@ -1,0 +1,7 @@
+guide_arrow.png
+size:34,44
+filter:Linear,Linear
+scale:0.25
+arrow
+bounds:2,2,30,40
+offsets:1,1,32,42

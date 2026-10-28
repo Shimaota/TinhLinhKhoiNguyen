@@ -1,0 +1,8 @@
+# Real database dumps with player accounts, emails, password hashes and IPs. NEVER commit.
+private-backup/
+*.dump.sql
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store

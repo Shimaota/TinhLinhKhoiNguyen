@@ -1,0 +1,670 @@
+2.png
+size:2017,1365
+filter:Linear,Linear
+scale:0.5
+Char_Base_img/Body
+bounds:1200,399,94,110
+rotate:90
+Char_Base_img/Body_lv2
+bounds:908,108,95,110
+rotate:90
+Char_Base_img/Body_lv3
+bounds:1170,180,97,110
+Char_Base_img/Body_lv4
+bounds:1312,390,94,109
+Char_Base_img/Body_lv5
+bounds:1361,502,95,110
+Char_Base_img/Body_side
+bounds:1240,599,89,98
+rotate:90
+Char_Base_img/Body_side_lv2
+bounds:1393,289,94,99
+Char_Base_img/Body_side_lv3
+bounds:1080,76,94,99
+Char_Base_img/Body_side_lv4
+bounds:1536,400,94,99
+Char_Base_img/Body_side_lv5
+bounds:1632,401,94,99
+Char_Base_img/Cloth
+bounds:1458,502,98,87
+rotate:90
+Char_Base_img/Cloth2_lv5
+bounds:937,852,171,159
+Char_Base_img/Cloth_lv3
+bounds:212,53,114,93
+Char_Base_img/Cloth_lv4
+bounds:1110,786,154,77
+Char_Base_img/Cloth_lv5
+bounds:1357,791,154,65
+Char_Base_img/Cloth_side
+bounds:894,205,119,78
+Char_Base_img/Cloth_side2_lv5
+bounds:440,230,93,163
+Char_Base_img/Cloth_side2_lv5_2
+bounds:909,403,93,163
+rotate:90
+Char_Base_img/Cloth_side_lv3
+bounds:38,112,89,101
+Char_Base_img/Cloth_side_lv5
+bounds:772,205,120,79
+Char_Base_img/Hair
+bounds:370,550,153,130
+Char_Base_img/Hair12
+bounds:1357,858,165,140
+offsets:0,0,179,140
+rotate:90
+Char_Base_img/Head feather 1
+bounds:1632,240,86,62
+Char_Base_img/Head feather 1_lv2
+bounds:1820,252,86,62
+Char_Base_img/Head feather 1_lv3
+bounds:1380,225,86,62
+Char_Base_img/Head feather 1_lv4
+bounds:1324,110,86,62
+rotate:90
+Char_Base_img/Head feather 1_lv5
+bounds:1388,137,86,62
+rotate:90
+Char_Base_img/Head feather 2
+bounds:1875,175,75,29
+rotate:90
+Char_Base_img/Head feather 2_lv2
+bounds:1977,168,75,29
+rotate:90
+Char_Base_img/Head feather 2_lv3
+bounds:1875,144,75,29
+Char_Base_img/Head feather 2_lv4
+bounds:1663,5,75,29
+rotate:90
+Char_Base_img/Head feather 2_lv5
+bounds:1735,85,75,29
+rotate:90
+Char_Base_img/L hand 1
+bounds:1021,1013,31,58
+rotate:90
+Char_Base_img/L hand 1_lv3
+bounds:1021,1013,31,58
+rotate:90
+Char_Base_img/L hand 1_lv2
+bounds:1628,10,33,63
+Char_Base_img/L hand 1_lv4
+bounds:1776,24,33,63
+Char_Base_img/L hand 2
+bounds:1875,50,47,59
+rotate:90
+Char_Base_img/L hand 2_2
+bounds:164,813,34,29
+offsets:0,0,46,47
+rotate:90
+Char_Base_img/L hand 2_3
+bounds:1611,75,68,33
+rotate:90
+Char_Base_img/L hand 2_3_lv2
+bounds:1248,2,71,39
+rotate:90
+Char_Base_img/L hand 2_3_lv3
+bounds:1592,2,69,34
+rotate:90
+Char_Base_img/L hand 2_3_lv4
+bounds:1108,2,72,35
+offsets:0,0,72,36
+rotate:90
+Char_Base_img/L hand 2_3_lv5
+bounds:932,21,69,36
+Char_Base_img/L hand 2_4
+bounds:790,2,55,69
+rotate:90
+Char_Base_img/L hand 2_4_lv2
+bounds:1761,164,57,73
+Char_Base_img/L hand 2_4_lv3
+bounds:1389,65,56,70
+Char_Base_img/L hand 2_4_lv4
+bounds:1020,131,58,72
+Char_Base_img/L hand 2_4_lv5
+bounds:1447,63,56,70
+Char_Base_img/L hand 2_lv2
+bounds:1811,27,49,58
+Char_Base_img/L hand 2_lv3
+bounds:1939,70,47,59
+rotate:90
+Char_Base_img/L hand 2_lv4
+bounds:1952,119,47,63
+rotate:90
+Char_Base_img/L hand 2_lv5
+bounds:1542,2,48,59
+Char_Base_img/L leg
+bounds:209,2,49,96
+rotate:90
+Char_Base_img/L leg_lv3
+bounds:1486,403,48,97
+Char_Base_img/Pant
+bounds:689,415,114,83
+rotate:90
+Char_Base_img/Pant_lv2
+bounds:1408,390,110,76
+rotate:90
+Char_Base_img/Pant_lv3
+bounds:1645,602,113,77
+Char_Base_img/Pant_lv4
+bounds:1828,554,113,79
+Char_Base_img/Pant_lv5
+bounds:1547,501,113,74
+rotate:90
+Char_Base_img/R hand 1
+bounds:1875,99,43,62
+rotate:90
+Char_Base_img/R hand 1_2
+bounds:112,230,59,64
+rotate:90
+Char_Base_img/R hand 1_2_lv2
+bounds:1020,65,58,64
+offsets:1,0,59,64
+Char_Base_img/R hand 1_2_lv3
+bounds:1410,2,59,64
+rotate:90
+Char_Base_img/R hand 1_2_lv4
+bounds:1476,2,59,64
+rotate:90
+Char_Base_img/R hand 1_lv2
+bounds:1489,252,44,59
+Char_Base_img/R hand 1_lv4
+bounds:1862,4,44,59
+rotate:90
+Char_Base_img/R hand 2
+bounds:1459,618,39,73
+Char_Base_img/R hand 2_2
+bounds:1921,464,88,41
+offsets:0,0,88,44
+rotate:90
+Char_Base_img/R hand 2_2_lv2
+bounds:1452,135,88,43
+offsets:0,0,89,45
+rotate:90
+Char_Base_img/R hand 2_2_lv3
+bounds:1535,227,88,40
+offsets:0,1,89,45
+Char_Base_img/R hand 2_2_lv4
+bounds:435,2,88,42
+offsets:0,0,89,46
+Char_Base_img/R hand 2_2_lv5
+bounds:1489,313,88,44
+offsets:0,0,89,46
+rotate:90
+Char_Base_img/R hand 2_3
+bounds:1505,63,46,80
+Char_Base_img/R hand 2_3_lv2
+bounds:1964,468,50,85
+Char_Base_img/R hand 2_3_lv3
+bounds:1289,13,48,81
+Char_Base_img/R hand 2_3_lv4
+bounds:1820,166,53,84
+offsets:0,0,53,85
+Char_Base_img/R hand 2_3_lv5
+bounds:1339,27,48,81
+Char_Base_img/R hand 2_4
+bounds:861,2,55,69
+rotate:90
+Char_Base_img/R hand 2_4_lv2
+bounds:1566,145,62,80
+Char_Base_img/R hand 2_4_lv3
+bounds:1553,73,56,70
+Char_Base_img/R hand 2_4_lv4
+bounds:1015,205,63,78
+Char_Base_img/R hand 2_4_lv5
+bounds:427,834,57,70
+Char_Base_img/R hand 2_lv2
+bounds:1691,82,42,73
+Char_Base_img/R hand 2_lv3
+bounds:1737,10,37,73
+Char_Base_img/R hand 2_lv4
+bounds:1694,6,41,74
+Char_Base_img/R hand 2_lv5
+bounds:1646,82,43,73
+Char_Base_img/R hand lv3
+bounds:1811,87,44,62
+rotate:90
+Char_Base_img/R leg
+bounds:1728,386,65,99
+rotate:90
+Char_Base_img/R leg2
+bounds:1535,269,48,95
+rotate:90
+Char_Base_img/R leg2_lv2
+bounds:1276,96,46,95
+Char_Base_img/R leg2_lv3
+bounds:1269,193,46,97
+Char_Base_img/R leg2_lv4
+bounds:1776,662,50,97
+Char_Base_img/R leg2_lv5
+bounds:905,59,47,96
+rotate:90
+Char_Base_img/R leg_lv2
+bounds:1720,239,64,98
+rotate:90
+Char_Base_img/R leg_lv3
+bounds:1145,7,66,101
+rotate:90
+Char_Base_img/R leg_lv4
+bounds:1810,316,67,100
+rotate:90
+Char_Base_img/R leg_lv5
+bounds:1760,561,66,99
+Char_Base_img/Spear 1
+bounds:474,1229,324,55
+Char_Base_img/arow
+bounds:427,906,225,64
+rotate:90
+Char_Base_img/arow_lv2
+bounds:220,1133,258,65
+Char_Base_img/arow_lv3
+bounds:38,215,258,72
+rotate:90
+Char_Base_img/arow_lv4
+bounds:480,1144,268,83
+Char_Base_img/arow_lv5
+bounds:164,849,281,87
+rotate:90
+Char_Base_img/axe
+bounds:938,1013,182,81
+rotate:90
+Char_Base_img/axe_2
+bounds:915,552,193,39
+Char_Base_img/axe_lv2
+bounds:198,567,170,113
+Char_Base_img/axe_lv2_2
+bounds:914,498,198,52
+Char_Base_img/axe_lv3
+bounds:21,2,186,108
+Char_Base_img/axe_lv3_2
+bounds:1658,1000,194,57
+Char_Base_img/axe_lv4
+bounds:525,531,174,133
+rotate:90
+Char_Base_img/axe_lv4_2
+bounds:685,954,188,63
+offsets:0,0,189,63
+rotate:90
+Char_Base_img/axe_lv5
+bounds:1658,1059,194,139
+Char_Base_img/axe_lv5_2
+bounds:493,885,212,67
+offsets:0,0,212,69
+Char_Base_img/chac3
+bounds:87,518,99,72
+Char_Base_img/dabocdan
+bounds:136,500,45,16
+Char_Base_img/dabocdan_lv2
+bounds:932,2,47,17
+Char_Base_img/dabocdan_lv3
+bounds:87,499,47,17
+Char_Base_img/dabocdan_lv4
+bounds:307,4,47,17
+rotate:90
+Char_Base_img/dabocdan_lv5
+bounds:1995,757,47,17
+rotate:90
+Char_Base_img/day cung
+bounds:1114,495,194,4
+Char_Base_img/day_cao_su
+bounds:905,285,170,9
+Char_Base_img/eye_ball
+bounds:1468,225,62,19
+rotate:90
+Char_Base_img/eye_brown
+bounds:1190,1209,69,19
+Char_Base_img/eye_close
+bounds:1339,2,69,23
+offsets:0,1,69,26
+Char_Base_img/face
+bounds:438,116,112,104
+rotate:90
+Char_Base_img/face12
+bounds:1285,293,106,95
+Char_Base_img/face12_lv2
+bounds:1257,501,102,96
+offsets:1,1,103,98
+Char_Base_img/face12_lv3
+bounds:1070,296,103,98
+rotate:90
+Char_Base_img/face12_lv4
+bounds:1176,75,103,98
+rotate:90
+Char_Base_img/face12_lv5
+bounds:1623,502,103,98
+Char_Base_img/face_lv2
+bounds:544,29,113,105
+Char_Base_img/face_lv3
+bounds:328,2,113,105
+rotate:90
+Char_Base_img/face_lv4
+bounds:1170,292,113,105
+Char_Base_img/face_lv5
+bounds:790,59,113,105
+Char_Base_img/gioten_back
+bounds:435,46,68,107
+rotate:90
+Char_Base_img/gioten_back_lv2
+bounds:1340,614,77,117
+rotate:90
+Char_Base_img/gioten_back_lv3
+bounds:1080,177,88,117
+offsets:0,0,89,118
+Char_Base_img/gioten_back_lv4
+bounds:1114,501,96,141
+rotate:90
+Char_Base_img/gioten_back_lv5
+bounds:188,290,110,141
+offsets:0,1,110,142
+rotate:90
+Char_Base_img/gioten_front
+bounds:1908,245,68,98
+rotate:90
+Char_Base_img/gioten_front_lv2
+bounds:1829,385,77,109
+rotate:90
+Char_Base_img/gioten_front_lv3
+bounds:1818,464,88,101
+offsets:0,0,89,101
+rotate:90
+Char_Base_img/gioten_front_lv4
+bounds:1357,693,96,141
+rotate:90
+Char_Base_img/gioten_front_lv5
+bounds:659,141,110,126
+offsets:0,1,110,127
+Char_Base_img/gioten_mid
+bounds:1500,669,27,143
+rotate:90
+Char_Base_img/gioten_mid_lv2
+bounds:1828,635,36,140
+offsets:0,0,36,141
+rotate:90
+Char_Base_img/gioten_mid_lv3
+bounds:775,529,37,137
+offsets:0,0,37,140
+rotate:90
+Char_Base_img/gioten_mid_lv4
+bounds:771,166,37,135
+offsets:1,0,38,138
+rotate:90
+Char_Base_img/gioten_mid_lv5
+bounds:749,3,39,136
+offsets:0,0,39,137
+Char_Base_img/moc_cau
+bounds:178,241,29,47
+offsets:2,1,33,49
+Char_Base_img/mouth 1
+bounds:1469,1034,28,16
+Char_Base_img/mouth 2
+bounds:1389,27,36,19
+offsets:0,0,38,19
+rotate:90
+Char_Base_img/muiten
+bounds:87,592,209,34
+rotate:90
+Char_Base_img/muiten_lv2
+bounds:112,291,205,34
+offsets:0,0,210,35
+rotate:90
+Char_Base_img/muiten_lv3
+bounds:123,593,209,36
+offsets:0,0,210,36
+rotate:90
+Char_Base_img/muiten_lv4
+bounds:161,593,209,35
+offsets:0,0,210,36
+rotate:90
+Char_Base_img/muiten_lv5
+bounds:148,291,205,38
+offsets:0,0,210,38
+rotate:90
+Char_Base_img/neckladge
+bounds:750,1197,47,30
+offsets:0,49,47,79
+Char_Base_img/neckladge1
+bounds:1621,628,39,22
+offsets:0,2,40,28
+rotate:90
+Char_Base_img/neckladge2
+bounds:1728,565,35,22
+offsets:0,2,36,24
+rotate:90
+Char_Base_img/neckladge3
+bounds:1987,565,24,45
+offsets:1,0,25,46
+Char_Base_img/neckladge_lv2
+bounds:1694,162,65,75
+Char_Base_img/neckladge_lv3
+bounds:1906,175,68,69
+rotate:90
+Char_Base_img/neckladge_lv4
+bounds:1630,157,62,81
+offsets:11,0,73,81
+Char_Base_img/neckladge_lv5
+bounds:1497,145,67,80
+Char_Base_img/neckladge_shadow
+bounds:1940,383,79,75
+offsets:0,0,79,76
+rotate:90
+Char_Base_img/pupil1
+bounds:1760,662,14,17
+offsets:1,1,16,19
+Char_Base_img/pupil2
+bounds:1499,858,12,15
+offsets:0,1,12,16
+Char_Base_img/rod
+bounds:1059,1230,210,133
+offsets:17,0,227,139
+Char_Base_img/rod_line
+bounds:2,1359,662,4
+Char_Base_img/rod_line2
+bounds:666,1359,391,4
+Char_Base_img/slingshot_lv2
+bounds:1269,696,86,103
+Char_Base_img/slingshot_lv3
+bounds:1728,453,88,106
+Char_Base_img/slingshot_lv4
+bounds:129,112,81,116
+Char_Base_img/slingshot_lv5
+bounds:1513,785,88,128
+rotate:90
+Char_Base_img/spear_lv2
+bounds:21,475,326,64
+offsets:0,1,326,65
+rotate:90
+Char_Base_img/spear_lv3
+bounds:474,1286,324,71
+offsets:3,0,327,71
+Char_Base_img/spear_lv4
+bounds:91,804,326,71
+rotate:90
+Char_Base_img/spear_lv5
+bounds:2,803,327,87
+rotate:90
+Char_Base_img/whip1
+bounds:1019,1258,99,34
+rotate:90
+Char_Base_img/whip1_lv2
+bounds:1912,315,99,66
+Char_Base_img/whip1_lv3
+bounds:1003,2,103,61
+Char_Base_img/whip1_lv4
+bounds:1317,198,93,61
+rotate:90
+Char_Base_img/whip1_lv5
+bounds:1500,616,119,51
+Char_Base_img/whip2_lv4
+bounds:2,416,385,17
+rotate:90
+Char_Base_img/whip2_lv5
+bounds:2,29,385,17
+rotate:90
+Char_Base_img/whip3_lv2
+bounds:1820,133,53,31
+offsets:0,0,54,32
+Char_Base_img/whip3_lv3
+bounds:707,890,62,37
+rotate:90
+Char_Base_img/whip3_lv4
+bounds:1766,89,73,42
+rotate:90
+Char_Base_img/whip3_lv5
+bounds:1943,555,78,42
+rotate:90
+Char_Base_img/whip_tie
+bounds:1535,319,79,95
+rotate:90
+Char_Base_img/whip_tie4
+bounds:1632,304,79,95
+Char_Base_img/whip_tie5
+bounds:1713,305,79,95
+rotate:90
+Char_Base_img/wip2
+bounds:21,112,361,15
+rotate:90
+female_base_img/apple basket
+bounds:535,281,133,137
+female_base_img/fang ornament
+bounds:1266,801,65,89
+rotate:90
+female_base_img/handle
+bounds:800,1197,160,217
+rotate:90
+female_base_img/lantern
+bounds:253,834,87,172
+rotate:90
+female_base_img/mask10_1
+bounds:307,403,132,145
+female_base_img/mask10_2
+bounds:670,269,100,144
+female_base_img/mask11_1
+bounds:1092,599,89,146
+offsets:0,12,89,158
+rotate:90
+female_base_img/mask11_2
+bounds:212,148,116,140
+offsets:0,12,116,152
+female_base_img/mask12_1
+bounds:905,296,105,163
+offsets:0,0,105,167
+rotate:90
+female_base_img/mask12_2
+bounds:368,682,144,150
+offsets:0,0,144,156
+female_base_img/mask13_1
+bounds:1672,1200,163,184
+rotate:90
+female_base_img/mask13_2
+bounds:741,733,129,182
+rotate:90
+female_base_img/mask14_1
+bounds:330,117,106,129
+female_base_img/mask14_2
+bounds:1645,681,78,129
+rotate:90
+female_base_img/mask15_1
+bounds:331,248,107,153
+female_base_img/mask15_2
+bounds:441,395,81,153
+female_base_img/mask16_1
+bounds:1842,806,126,171
+rotate:90
+female_base_img/mask16_2
+bounds:653,713,86,170
+female_base_img/mask17_1
+bounds:544,136,113,143
+female_base_img/mask17_2
+bounds:1500,698,85,143
+rotate:90
+female_base_img/mask18_1
+bounds:1110,865,151,175
+female_base_img/mask18_2
+bounds:915,593,124,175
+offsets:5,0,129,175
+rotate:90
+female_base_img/mask19_1
+bounds:1858,1187,152,176
+female_base_img/mask19_2
+bounds:660,531,113,180
+female_base_img/mask1_1
+bounds:750,1018,186,177
+female_base_img/mask1_2
+bounds:1021,1046,167,182
+female_base_img/mask20_1
+bounds:188,402,117,163
+female_base_img/mask20_2
+bounds:524,420,109,163
+rotate:90
+female_base_img/mask21_1
+bounds:1828,673,131,165
+rotate:90
+female_base_img/mask21_2
+bounds:1263,868,92,172
+female_base_img/mask22_1
+bounds:1469,1052,148,187
+rotate:90
+female_base_img/mask22_2
+bounds:1648,884,114,192
+rotate:90
+female_base_img/mask23_1
+bounds:1499,875,147,175
+female_base_img/mask23_2
+bounds:1854,934,111,161
+rotate:90
+female_base_img/mask24_1
+bounds:1854,1047,138,161
+rotate:90
+female_base_img/mask24_2
+bounds:1107,690,94,160
+rotate:90
+female_base_img/mask2_1
+bounds:750,864,185,152
+female_base_img/mask2_2
+bounds:198,682,168,150
+female_base_img/mask3_1
+bounds:2,1132,216,225
+female_base_img/mask3_2
+bounds:253,923,172,208
+offsets:0,1,172,209
+female_base_img/mask4_1
+bounds:1474,1202,196,161
+female_base_img/mask4_2
+bounds:775,568,138,163
+offsets:0,0,139,164
+female_base_img/mask5_1
+bounds:220,1200,252,157
+female_base_img/mask5_2
+bounds:1271,1207,201,156
+female_base_img/mask6_1
+bounds:925,719,131,180
+rotate:90
+female_base_img/mask6_2
+bounds:1369,1025,98,180
+offsets:0,1,98,181
+female_base_img/mask7_1
+bounds:774,414,113,133
+offsets:0,1,113,134
+rotate:90
+female_base_img/mask7_2
+bounds:659,2,88,137
+offsets:0,1,88,138
+female_base_img/mask8_1
+bounds:772,286,131,126
+female_base_img/mask8_2
+bounds:1074,401,92,124
+offsets:7,1,99,125
+rotate:90
+female_base_img/mask9_1
+bounds:514,707,137,176
+female_base_img/mask9_2
+bounds:1648,761,121,178
+offsets:0,1,121,180
+rotate:90
+female_base_img/pestle 1
+bounds:1190,1042,163,177
+offsets:0,2,190,188
+rotate:90
+female_base_img/pestle 2
+bounds:493,954,190,188
+female_base_img/tassel
+bounds:1987,612,28,59

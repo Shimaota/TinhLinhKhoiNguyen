@@ -1,0 +1,62 @@
+Zarvok.png
+size:382,270
+filter:Linear,Linear
+scale:0.5
+pet3_img/bleg L 1
+bounds:299,92,36,48
+offsets:3,0,39,48
+rotate:90
+pet3_img/bleg L 2
+bounds:349,93,27,35
+offsets:0,4,27,39
+pet3_img/bleg L 3
+bounds:113,3,36,17
+pet3_img/bleg R 1
+bounds:299,54,36,48
+offsets:3,0,39,48
+rotate:90
+pet3_img/bleg R 2
+bounds:349,56,27,35
+offsets:0,4,27,39
+pet3_img/bleg R 3
+bounds:151,3,36,17
+pet3_img/body
+bounds:181,137,131,76
+rotate:90
+pet3_img/eye
+bounds:189,3,21,17
+pet3_img/fleg L 1
+bounds:299,9,34,43
+pet3_img/fleg L 2
+bounds:259,238,30,37
+rotate:90
+pet3_img/fleg L 3
+bounds:259,138,39,20
+rotate:90
+pet3_img/fleg R 1
+bounds:335,18,34,43
+rotate:90
+pet3_img/fleg R 2
+bounds:259,206,30,37
+rotate:90
+pet3_img/fleg R 3
+bounds:281,138,39,20
+rotate:90
+pet3_img/head
+bounds:299,179,89,79
+rotate:90
+pet3_img/neck
+bounds:113,22,94,90
+rotate:90
+pet3_img/tail
+bounds:303,130,77,47
+pet3_img/wing l
+bounds:2,115,103,153
+pet3_img/wing l 2
+bounds:212,9,85,126
+offsets:0,0,85,148
+pet3_img/wing r
+bounds:107,118,72,150
+pet3_img/wing r 2
+bounds:2,2,111,109
+rotate:90

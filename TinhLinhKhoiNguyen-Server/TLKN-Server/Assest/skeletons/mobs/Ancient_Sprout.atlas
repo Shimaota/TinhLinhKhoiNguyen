@@ -1,0 +1,84 @@
+Ancient_Sprout.png
+size:148,637
+filter:Linear,Linear
+scale:0.5
+pet4_img/arm l
+bounds:44,15,34,36
+offsets:0,0,40,36
+rotate:90
+pet4_img/arm r
+bounds:85,29,33,38
+rotate:90
+pet4_img/body
+bounds:2,84,84,85
+rotate:90
+pet4_img/chest
+bounds:2,454,83,93
+rotate:90
+pet4_img/ear l
+bounds:97,437,43,47
+rotate:90
+pet4_img/ear r
+bounds:2,8,25,31
+rotate:90
+pet4_img/eyebrowns
+bounds:2,35,32,12
+pet4_img/eyes
+bounds:89,64,55,20
+offsets:1,0,56,20
+pet4_img/fluff l
+bounds:89,86,60,55
+rotate:90
+pet4_img/fluff r
+bounds:90,299,23,56
+rotate:90
+pet4_img/foot l
+bounds:125,33,29,14
+rotate:90
+pet4_img/foot r
+bounds:125,33,29,14
+rotate:90
+pet4_img/gem
+bounds:82,2,25,31
+rotate:90
+pet4_img/hair
+bounds:97,482,42,49
+rotate:90
+pet4_img/hand l
+bounds:2,49,33,40
+rotate:90
+pet4_img/hand r
+bounds:44,51,31,39
+rotate:90
+pet4_img/head
+bounds:2,251,86,79
+offsets:0,0,105,88
+pet4_img/head_die
+bounds:2,170,86,79
+offsets:0,0,105,88
+pet4_img/horn l
+bounds:90,211,55,86
+pet4_img/horn r
+bounds:2,406,46,91
+rotate:90
+pet4_img/leg l
+bounds:95,398,37,51
+rotate:90
+pet4_img/leg r
+bounds:93,360,36,47
+rotate:90
+pet4_img/necklace
+bounds:90,148,55,61
+pet4_img/shoulder l
+bounds:101,526,44,36
+pet4_img/shoulder r
+bounds:93,324,41,34
+pet4_img/tail
+bounds:101,564,71,44
+rotate:90
+pet4_img/wing l
+bounds:2,539,96,97
+rotate:90
+pet4_img/wing r
+bounds:2,332,72,89
+rotate:90

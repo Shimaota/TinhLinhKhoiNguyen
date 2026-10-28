@@ -1,0 +1,169 @@
+Stone_guard.png
+size:1890,529
+filter:Linear,Linear
+scale:0.2
+New folder/1
+bounds:949,2,29,75
+offsets:168,59,201,191
+rotate:90
+New folder/10
+bounds:810,92,116,185
+offsets:26,3,201,191
+rotate:90
+New folder/11
+bounds:444,23,92,187
+offsets:19,3,201,191
+rotate:90
+New folder/12
+bounds:2,10,73,186
+offsets:19,3,201,191
+rotate:90
+New folder/13
+bounds:190,27,56,191
+offsets:14,0,201,191
+rotate:90
+New folder/14
+bounds:1774,270,33,186
+offsets:12,3,201,191
+New folder/15
+bounds:1559,208,36,175
+offsets:5,9,201,191
+rotate:90
+New folder/2
+bounds:1053,296,42,116
+offsets:142,37,201,191
+New folder/3
+bounds:802,2,88,145
+offsets:113,24,201,191
+rotate:90
+New folder/4
+bounds:633,14,101,167
+offsets:87,11,201,191
+rotate:90
+New folder/5
+bounds:997,33,128,178
+offsets:69,7,201,191
+New folder/6
+bounds:1127,2,131,186
+offsets:53,2,201,191
+rotate:90
+New folder/7
+bounds:1293,168,153,188
+offsets:40,2,201,191
+rotate:90
+New folder/8
+bounds:1127,135,164,186
+offsets:17,3,201,191
+New folder/9
+bounds:1315,26,140,185
+offsets:21,4,201,191
+rotate:90
+New folder/mini_boss_vfx-stone-ground_blast_24
+bounds:1842,342,185,46
+offsets:271,22,742,130
+rotate:90
+New folder/mini_boss_vfx-stone-ground_blast_25
+bounds:1559,458,281,69
+offsets:217,22,742,130
+New folder/mini_boss_vfx-stone-ground_blast_26
+bounds:444,117,364,91
+offsets:181,19,742,130
+New folder/mini_boss_vfx-stone-ground_blast_27
+bounds:558,210,403,98
+offsets:168,14,742,130
+New folder/mini_boss_vfx-stone-ground_blast_28
+bounds:634,310,417,102
+offsets:158,10,742,130
+New folder/mini_boss_vfx-stone-ground_blast_29
+bounds:634,414,484,113
+offsets:128,7,742,130
+New folder/mini_boss_vfx-stone-ground_blast_30
+bounds:2,288,554,116
+offsets:93,6,742,130
+New folder/mini_boss_vfx-stone-ground_blast_31
+bounds:2,406,630,121
+offsets:54,4,742,130
+New folder/mini_boss_vfx-stone-ground_blast_32
+bounds:2,85,440,97
+offsets:147,19,742,130
+New folder/mini_boss_vfx-stone-ground_blast_33
+bounds:1120,323,435,101
+offsets:146,18,742,130
+New folder/mini_boss_vfx-stone-ground_blast_34
+bounds:2,184,439,102
+offsets:142,17,742,130
+New folder/mini_boss_vfx-stone-ground_blast_35
+bounds:1120,426,437,101
+offsets:139,17,742,130
+StoneGuardian_img/Shoulder L
+bounds:1052,226,68,73
+rotate:90
+StoneGuardian_img/Shoulder R
+bounds:1724,31,63,73
+StoneGuardian_img/arm L
+bounds:443,210,76,73
+rotate:90
+StoneGuardian_img/arm R
+bounds:1809,290,50,79
+rotate:90
+StoneGuardian_img/b_arm_cast_skill
+bounds:1597,107,125,99
+StoneGuardian_img/b_arm_smash
+bounds:1483,197,124,74
+rotate:90
+StoneGuardian_img/body
+bounds:1559,246,210,213
+rotate:90
+StoneGuardian_img/f_arm_punch
+bounds:1502,63,132,93
+rotate:90
+StoneGuardian_img/f_arm_smash
+bounds:1597,13,125,92
+StoneGuardian_img/finger 1
+bounds:949,35,42,55
+StoneGuardian_img/finger 1 R
+bounds:383,7,40,58
+rotate:90
+StoneGuardian_img/finger 2
+bounds:1736,208,36,64
+rotate:90
+StoneGuardian_img/finger 2 R
+bounds:518,227,38,59
+StoneGuardian_img/finger 3
+bounds:1809,246,42,72
+rotate:90
+StoneGuardian_img/finger 3 R
+bounds:1849,13,32,51
+StoneGuardian_img/finger 4
+bounds:1789,2,32,58
+rotate:90
+StoneGuardian_img/finger 4 R
+bounds:1026,3,28,40
+rotate:90
+StoneGuardian_img/foot L
+bounds:383,49,59,34
+StoneGuardian_img/foot R
+bounds:1809,407,49,24
+rotate:90
+StoneGuardian_img/forearm L
+bounds:963,213,95,87
+rotate:90
+StoneGuardian_img/forearm R_low
+bounds:1724,106,100,82
+offsets:0,0,102,82
+rotate:90
+StoneGuardian_img/hand L
+bounds:1846,66,60,40
+rotate:90
+StoneGuardian_img/hand R
+bounds:1808,128,56,52
+StoneGuardian_img/leg L
+bounds:558,331,73,74
+rotate:90
+StoneGuardian_img/leg R
+bounds:1808,182,58,62
+StoneGuardian_img/thigh L
+bounds:1502,7,54,83
+rotate:90
+StoneGuardian_img/thigh R
+bounds:1789,36,55,68

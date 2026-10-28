@@ -1,0 +1,183 @@
+Forest_Elite_lv3.png
+size:1985,546
+filter:Linear,Linear
+scale:0.2
+Forest_E_lv3_1/body2
+bounds:1366,185,118,70
+rotate:90
+Forest_E_lv3_1/body3
+bounds:1064,279,265,122
+rotate:90
+Forest_E_lv3_1/bpdy4
+bounds:1853,90,76,51
+rotate:90
+Forest_E_lv3_1/foot_L
+bounds:1925,430,62,52
+rotate:90
+Forest_E_lv3_1/foot_L2
+bounds:1042,183,79,51
+rotate:90
+Forest_E_lv3_1/foot_R
+bounds:1042,183,79,51
+rotate:90
+Forest_E_lv3_1/hand_L
+bounds:791,183,62,91
+rotate:90
+Forest_E_lv3_1/hand_L2
+bounds:1792,22,59,78
+Forest_E_lv3_1/hand_L3
+bounds:195,2,58,56
+Forest_E_lv3_1/hand_R
+bounds:1556,3,49,70
+offsets:0,0,49,71
+rotate:90
+Forest_E_lv3_1/hand_R2
+bounds:721,180,65,68
+rotate:90
+Forest_E_lv3_1/hand_R3
+bounds:1925,494,50,55
+rotate:90
+Forest_E_lv3_1/hand_low_L
+bounds:1278,471,73,85
+rotate:90
+Forest_E_lv3_1/hand_low_L2
+bounds:1830,230,73,85
+rotate:90
+Forest_E_lv3_1/hand_low_R
+bounds:1906,41,59,77
+rotate:90
+Forest_E_lv3_1/hand_up_L
+bounds:805,124,54,57
+Forest_E_lv3_1/hand_up_R
+bounds:1628,3,49,68
+rotate:90
+Forest_E_lv3_1/head
+bounds:721,247,297,270
+rotate:90
+Forest_E_lv3_1/hip_F
+bounds:1188,431,54,113
+Forest_E_lv3_1/hip_L
+bounds:1095,184,93,80
+rotate:90
+Forest_E_lv3_1/hip_R
+bounds:1910,172,51,71
+offsets:0,1,51,72
+rotate:90
+Forest_E_lv3_1/leg_L
+bounds:1910,102,68,69
+rotate:90
+Forest_E_lv3_1/leg_L2
+bounds:884,183,62,77
+rotate:90
+Forest_E_lv3_1/leg_R
+bounds:963,183,62,77
+rotate:90
+Forest_E_lv3_1/long
+bounds:1625,189,203,114
+Forest_E_lv3_1/thig_L
+bounds:1917,225,60,78
+Forest_E_lv3_1/thig_R
+bounds:1830,168,60,78
+rotate:90
+New folder/1
+bounds:716,111,29,75
+offsets:168,59,201,191
+rotate:90
+New folder/10
+bounds:1438,187,116,185
+offsets:26,3,201,191
+rotate:90
+New folder/11
+bounds:1177,185,92,187
+offsets:19,3,201,191
+rotate:90
+New folder/12
+bounds:1278,283,73,186
+offsets:19,3,201,191
+New folder/13
+bounds:2,2,56,191
+offsets:14,0,201,191
+rotate:90
+New folder/14
+bounds:528,106,33,186
+offsets:12,3,201,191
+rotate:90
+New folder/15
+bounds:628,142,36,175
+offsets:5,9,201,191
+rotate:90
+New folder/2
+bounds:117,60,42,116
+offsets:142,37,201,191
+rotate:90
+New folder/3
+bounds:1188,281,88,145
+offsets:113,24,201,191
+New folder/4
+bounds:692,3,101,167
+offsets:87,11,201,191
+rotate:90
+New folder/5
+bounds:861,3,128,178
+offsets:69,7,201,191
+New folder/6
+bounds:1556,54,131,186
+offsets:53,2,201,191
+rotate:90
+New folder/7
+bounds:1179,30,153,188
+offsets:40,2,201,191
+rotate:90
+New folder/8
+bounds:991,17,164,186
+offsets:17,3,201,191
+rotate:90
+New folder/9
+bounds:1369,43,140,185
+offsets:21,4,201,191
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_24
+bounds:1744,2,185,46
+offsets:271,22,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_25
+bounds:993,264,280,69
+offsets:218,22,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_26
+bounds:628,180,364,91
+offsets:181,19,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_27
+bounds:528,141,403,98
+offsets:168,14,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_28
+bounds:424,127,417,102
+offsets:158,10,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_29
+bounds:2,60,484,113
+offsets:128,7,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_30
+bounds:1369,428,554,116
+offsets:93,6,742,130
+New folder/mini_boss_vfx-jungle-ground_blast_31
+bounds:1353,305,630,121
+offsets:54,4,742,130
+New folder/mini_boss_vfx-jungle-ground_blast_32
+bounds:117,104,440,97
+offsets:147,19,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_33
+bounds:255,2,435,101
+offsets:146,18,742,130
+New folder/mini_boss_vfx-jungle-ground_blast_34
+bounds:216,105,439,102
+offsets:142,17,742,130
+rotate:90
+New folder/mini_boss_vfx-jungle-ground_blast_35
+bounds:320,107,437,102
+offsets:139,17,742,130
+rotate:90

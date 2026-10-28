@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="color-scheme" content="light">
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f4c4a'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='800' text-anchor='middle' fill='%23f2a900' font-family='Arial'%3ET%3C/text%3E%3C/svg%3E">
+  <title>TLNT Admin</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+  <div id="app">
+    <aside id="side">
+      <div class="brand"><i>T</i><span>TLNT Admin</span><button class="side-toggle" id="sideToggle" type="button" aria-label="Thu gọn thanh điều hướng" title="Thu gọn thanh điều hướng">‹</button></div>
+      <input id="menuSearch" type="search" placeholder="Tìm chức năng (Ctrl K)" aria-label="Tìm chức năng" autocomplete="off">
+      <nav id="nav" aria-label="Điều hướng"></nav>
+      <div id="navEmpty" hidden>Không tìm thấy chức năng phù hợp.</div>
+      <div class="foot">
+        <div class="av">A</div>
+        <div class="who"><b>Quản trị viên</b><small>Máy chủ chính</small></div>
+        <button class="btn small" id="logout" title="Đăng xuất">Thoát</button>
+      </div>
+    </aside>
+    <div id="ws">
+      <header>
+        <button class="btn small" id="menuBtn" aria-label="Mở menu" aria-expanded="false" aria-controls="side">☰</button>
+        <strong id="pageTitle"></strong><span style="flex:1"></span>
+        <span class="chip warn" id="hdrMaint" hidden>Đang bảo trì</span>
+        <span class="chip bad" id="hdrShutdown" hidden></span>
+        <div id="hdrStatus"><b></b><span>Đang kết nối…</span></div>
+      </header>
+      <main id="view"></main>
+    </div>
+  </div>
+  <button id="navBackdrop" type="button" aria-label="Đóng menu"></button>
+  <div id="login" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="box2">
+      <h2 id="loginTitle" style="font-size:20px">Đăng nhập TLNT</h2>
+      <p class="mut">Nhập mật khẩu quản trị để tiếp tục.</p>
+      <input type="password" id="loginPw" placeholder="Mật khẩu quản trị">
+      <button class="btn primary" id="loginBtn">Đăng nhập</button>
+      <div id="loginErr"></div>
+    </div>
+  </div>
+  <div id="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dlgTitle">
+    <div class="m">
+      <h3 id="dlgTitle">Xác nhận thao tác</h3>
+      <p id="dlgText"></p>
+      <div class="row">
+        <button class="btn" id="dlgNo">Huỷ</button>
+        <button class="btn primary" id="dlgYes">Đồng ý</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="admin.js"></script>
+</body>
+
+</html>

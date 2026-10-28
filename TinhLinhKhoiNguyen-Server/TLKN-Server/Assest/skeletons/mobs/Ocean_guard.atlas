@@ -1,0 +1,160 @@
+Ocean_guard.png
+size:1995,485
+filter:Linear,Linear
+scale:0.2
+New folder/1
+bounds:1365,258,29,75
+offsets:168,59,201,191
+New folder/10
+bounds:930,252,116,185
+offsets:26,3,201,191
+rotate:90
+New folder/11
+bounds:1099,391,92,187
+offsets:19,3,201,191
+rotate:90
+New folder/12
+bounds:1451,272,73,186
+offsets:19,3,201,191
+rotate:90
+New folder/13
+bounds:1705,177,56,191
+offsets:14,0,201,191
+New folder/14
+bounds:641,84,33,186
+offsets:12,3,201,191
+rotate:90
+New folder/15
+bounds:179,6,36,175
+offsets:5,9,201,191
+rotate:90
+New folder/2
+bounds:356,4,42,116
+offsets:142,37,201,191
+rotate:90
+New folder/3
+bounds:1288,395,88,145
+offsets:113,24,201,191
+rotate:90
+New folder/4
+bounds:930,382,101,167
+offsets:87,11,201,191
+rotate:90
+New folder/5
+bounds:1556,9,128,178
+offsets:69,7,201,191
+rotate:90
+New folder/6
+bounds:1509,139,131,186
+offsets:53,2,201,191
+rotate:90
+New folder/7
+bounds:1763,180,153,188
+offsets:40,2,201,191
+New folder/8
+bounds:1736,11,164,186
+offsets:17,3,201,191
+rotate:90
+New folder/9
+bounds:1117,249,140,185
+offsets:21,4,201,191
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_24
+bounds:1918,183,185,45
+offsets:271,22,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_25
+bounds:540,4,281,69
+offsets:217,22,742,130
+New folder/mini_boss_vfx-ocean-ground_blast_26
+bounds:616,119,364,91
+offsets:181,19,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_27
+bounds:516,75,408,98
+offsets:166,14,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_28
+bounds:411,66,417,103
+offsets:158,10,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_29
+bounds:1509,370,484,113
+offsets:128,7,742,130
+New folder/mini_boss_vfx-ocean-ground_blast_30
+bounds:1000,7,554,116
+offsets:93,6,742,130
+New folder/mini_boss_vfx-ocean-ground_blast_31
+bounds:877,125,630,121
+offsets:54,4,742,130
+New folder/mini_boss_vfx-ocean-ground_blast_32
+bounds:2,43,440,97
+offsets:147,19,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_33
+bounds:308,48,435,101
+offsets:146,18,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_34
+bounds:101,44,439,102
+offsets:142,17,742,130
+rotate:90
+New folder/mini_boss_vfx-ocean-ground_blast_35
+bounds:205,46,437,101
+offsets:139,17,742,130
+rotate:90
+Ocean_Guardian_img/Bicep L
+bounds:1924,81,49,55
+rotate:90
+Ocean_Guardian_img/Hand L
+bounds:1639,304,64,64
+Ocean_Guardian_img/Shoulder L
+bounds:823,3,75,79
+Ocean_Guardian_img/Wrist L
+bounds:1396,259,53,74
+Ocean_Guardian_img/bicep R
+bounds:1435,347,65,68
+rotate:90
+Ocean_Guardian_img/body
+bounds:709,248,219,235
+Ocean_Guardian_img/claw 1
+bounds:709,121,125,166
+rotate:90
+Ocean_Guardian_img/claw 2
+bounds:1365,335,58,68
+rotate:90
+Ocean_Guardian_img/claw 3
+bounds:829,86,53,33
+Ocean_Guardian_img/finger L 1
+bounds:97,2,31,39
+Ocean_Guardian_img/finger L 2
+bounds:1336,347,24,46
+Ocean_Guardian_img/finger L 3
+bounds:616,76,23,41
+Ocean_Guardian_img/foor L
+bounds:1304,347,46,30
+rotate:90
+Ocean_Guardian_img/foot R
+bounds:1639,273,64,29
+Ocean_Guardian_img/head
+bounds:1435,414,72,69
+Ocean_Guardian_img/jaw
+bounds:474,2,64,62
+Ocean_Guardian_img/leg L
+bounds:130,4,38,47
+rotate:90
+Ocean_Guardian_img/leg R
+bounds:2,2,39,54
+rotate:90
+Ocean_Guardian_img/mouth
+bounds:58,2,39,37
+rotate:90
+Ocean_Guardian_img/shoulder R
+bounds:900,3,120,98
+rotate:90
+Ocean_Guardian_img/thigh L
+bounds:1924,132,49,62
+rotate:90
+Ocean_Guardian_img/thigh R
+bounds:1304,264,81,59
+rotate:90

@@ -1,0 +1,196 @@
+HermitCrab.png
+size:957,273
+filter:Linear,Linear
+scale:0.2
+HermitCrab_1/Eye L
+bounds:759,3,28,24
+HermitCrab_1/Eye R
+bounds:809,29,26,21
+rotate:90
+HermitCrab_1/armA L
+bounds:383,62,60,54
+HermitCrab_1/armA R
+bounds:304,9,56,50
+HermitCrab_1/armB L
+bounds:872,169,46,45
+HermitCrab_1/armB R
+bounds:739,124,44,41
+HermitCrab_1/body
+bounds:2,43,149,73
+HermitCrab_1/clawA L
+bounds:657,161,29,53
+HermitCrab_1/clawA R
+bounds:688,138,27,49
+rotate:90
+HermitCrab_1/clawB L
+bounds:443,119,55,77
+HermitCrab_1/clawB R
+bounds:500,124,51,72
+HermitCrab_1/legA L
+bounds:831,88,34,38
+rotate:90
+HermitCrab_1/legA L copy
+bounds:909,112,30,40
+rotate:90
+HermitCrab_1/legA L copy 2
+bounds:920,180,35,34
+HermitCrab_1/legA L copy 3
+bounds:871,94,29,36
+rotate:90
+HermitCrab_1/legB L
+bounds:553,136,44,60
+HermitCrab_1/legB L copy
+bounds:362,2,51,53
+HermitCrab_1/legB L copy 2
+bounds:124,4,37,58
+rotate:90
+HermitCrab_1/legB L copy 3
+bounds:688,167,44,51
+HermitCrab_1/legC L
+bounds:780,169,49,37
+rotate:90
+HermitCrab_1/legC L copy
+bounds:599,137,54,25
+HermitCrab_1/legC L copy 2
+bounds:871,125,36,42
+HermitCrab_1/legC L copy 3
+bounds:702,2,48,26
+rotate:90
+HermitCrab_1/shellA
+bounds:821,216,66,55
+HermitCrab_2/shellA
+bounds:821,216,66,55
+HermitCrab_1/shellB
+bounds:2,118,145,153
+HermitCrab_1/whisker L
+bounds:521,4,42,56
+HermitCrab_1/whisker R
+bounds:2,4,59,37
+HermitCrab_2/Eye L
+bounds:789,3,28,24
+HermitCrab_3/Eye L
+bounds:789,3,28,24
+HermitCrab_2/Eye R
+bounds:819,2,26,21
+HermitCrab_3/Eye R
+bounds:819,2,26,21
+HermitCrab_2/armA L
+bounds:445,57,60,54
+rotate:90
+HermitCrab_2/armA R
+bounds:599,164,56,50
+HermitCrab_2/armB L
+bounds:655,2,46,45
+rotate:90
+HermitCrab_2/armB R
+bounds:785,123,44,41
+rotate:90
+HermitCrab_2/body
+bounds:443,198,149,73
+HermitCrab_2/clawA L
+bounds:655,106,29,53
+HermitCrab_3/clawA L
+bounds:655,106,29,53
+HermitCrab_2/clawA R
+bounds:730,57,27,49
+rotate:90
+HermitCrab_2/clawB L
+bounds:594,216,55,77
+rotate:90
+HermitCrab_2/clawB R
+bounds:673,220,51,72
+rotate:90
+HermitCrab_2/legA L
+bounds:874,23,34,38
+HermitCrab_2/legA L copy
+bounds:832,25,30,40
+rotate:90
+HermitCrab_2/legA L copy 2
+bounds:920,144,35,34
+HermitCrab_2/legA L copy 3
+bounds:831,57,29,36
+rotate:90
+HermitCrab_2/legB L
+bounds:557,74,44,60
+HermitCrab_2/legB L copy
+bounds:415,2,51,53
+HermitCrab_2/legB L copy 2
+bounds:184,4,37,58
+rotate:90
+HermitCrab_2/legB L copy 3
+bounds:734,167,44,51
+HermitCrab_2/legC L
+bounds:686,99,49,37
+HermitCrab_3/legC L
+bounds:686,99,49,37
+HermitCrab_2/legC L copy
+bounds:655,50,54,25
+rotate:90
+HermitCrab_3/legC L copy
+bounds:655,50,54,25
+rotate:90
+HermitCrab_2/legC L copy 2
+bounds:737,86,36,42
+rotate:90
+HermitCrab_2/legC L copy 3
+bounds:781,57,48,26
+HermitCrab_2/shellB
+bounds:149,118,145,153
+HermitCrab_2/whisker L
+bounds:611,21,42,56
+HermitCrab_3/whisker L
+bounds:611,21,42,56
+HermitCrab_2/whisker R
+bounds:63,4,59,37
+HermitCrab_3/whisker R
+bounds:63,4,59,37
+HermitCrab_3/armA L
+bounds:501,62,60,54
+rotate:90
+HermitCrab_3/armA R
+bounds:603,79,56,50
+rotate:90
+HermitCrab_3/armB L
+bounds:682,52,46,45
+HermitCrab_3/armB R
+bounds:828,124,44,41
+rotate:90
+HermitCrab_3/body
+bounds:153,43,149,73
+HermitCrab_3/clawA R
+bounds:730,6,27,49
+HermitCrab_3/clawB L
+bounds:304,61,55,77
+rotate:90
+HermitCrab_3/clawB R
+bounds:747,220,51,72
+rotate:90
+HermitCrab_3/legA L
+bounds:910,40,34,38
+HermitCrab_3/legA L copy
+bounds:909,80,30,40
+rotate:90
+HermitCrab_3/legA L copy 2
+bounds:910,4,35,34
+HermitCrab_3/legA L copy 3
+bounds:871,63,29,36
+rotate:90
+HermitCrab_3/legB L
+bounds:565,12,44,60
+HermitCrab_3/legB L copy
+bounds:468,2,51,53
+HermitCrab_3/legB L copy 2
+bounds:244,4,37,58
+rotate:90
+HermitCrab_3/legB L copy 3
+bounds:819,170,44,51
+rotate:90
+HermitCrab_3/legC L copy 2
+bounds:781,85,36,42
+rotate:90
+HermitCrab_3/legC L copy 3
+bounds:759,29,48,26
+HermitCrab_3/shellA
+bounds:889,216,66,55
+HermitCrab_3/shellB
+bounds:296,118,145,153

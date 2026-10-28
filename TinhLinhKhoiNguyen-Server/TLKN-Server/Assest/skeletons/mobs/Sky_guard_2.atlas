@@ -1,0 +1,39 @@
+Sky_guard_2.png
+size:160,721
+filter:Linear,Linear
+scale:0.5
+lv2/body
+bounds:2,505,93,127
+offsets:2,0,95,127
+rotate:90
+lv2/dress
+bounds:2,195,107,97
+lv2/hair
+bounds:2,600,149,119
+lv2/hair 2
+bounds:2,294,104,112
+offsets:0,0,105,112
+rotate:90
+lv2/head
+bounds:2,400,113,103
+lv2/l arm1
+bounds:111,172,47,61
+offsets:0,1,48,63
+lv2/l arm2
+bounds:106,93,43,77
+lv2/l leg
+bounds:2,73,59,101
+rotate:90
+lv2/l leg 2
+bounds:2,134,59,102
+rotate:90
+lv2/r arm1
+bounds:116,235,36,64
+lv2/r arn2
+bounds:100,2,54,69
+lv2/r leg
+bounds:2,10,61,96
+rotate:90
+lv2/weapon
+bounds:117,301,202,40
+rotate:90

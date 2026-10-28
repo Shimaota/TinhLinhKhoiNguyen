@@ -1,0 +1,145 @@
+Artic_guard.png
+size:2015,491
+filter:Linear,Linear
+scale:0.2
+Artic_Guardian_img/back foot L
+bounds:919,38,73,49
+Artic_Guardian_img/back foot R
+bounds:1195,10,73,45
+Artic_Guardian_img/back leg L
+bounds:994,29,73,58
+Artic_Guardian_img/back leg R
+bounds:1138,30,65,55
+rotate:90
+Artic_Guardian_img/back thigh L
+bounds:558,296,69,70
+Artic_Guardian_img/back thigh R
+bounds:1069,30,67,65
+Artic_Guardian_img/body
+bounds:1539,85,297,212
+Artic_Guardian_img/eye L
+bounds:1539,368,18,18
+Artic_Guardian_img/eye L copy
+bounds:1039,289,16,16
+Artic_Guardian_img/front foot L
+bounds:1909,14,77,50
+Artic_Guardian_img/front foot R
+bounds:1270,10,67,45
+Artic_Guardian_img/front leg L
+bounds:1909,66,107,96
+rotate:90
+Artic_Guardian_img/front leg R
+bounds:1925,291,99,88
+offsets:0,1,99,89
+rotate:90
+Artic_Guardian_img/front shoulder L
+bounds:443,141,107,121
+offsets:0,2,107,123
+rotate:90
+Artic_Guardian_img/front shoulder R
+bounds:1909,175,99,114
+Artic_Guardian_img/head
+bounds:439,32,107,116
+rotate:90
+Artic_Guardian_img/inmouth
+bounds:913,2,31,34
+Artic_Guardian_img/luoi
+bounds:946,14,46,22
+Artic_Guardian_img/mouth
+bounds:1039,307,79,67
+Artic_Guardian_img/teeth back
+bounds:1524,170,13,22
+New folder1/1
+bounds:1712,10,29,75
+offsets:168,59,201,191
+rotate:90
+New folder1/10
+bounds:944,89,116,185
+offsets:26,3,201,191
+New folder1/11
+bounds:1204,57,92,187
+offsets:19,3,201,191
+rotate:90
+New folder1/12
+bounds:1524,10,73,186
+offsets:19,3,201,191
+rotate:90
+New folder1/13
+bounds:726,52,56,191
+offsets:14,0,201,191
+rotate:90
+New folder1/14
+bounds:2,8,33,186
+offsets:12,3,201,191
+rotate:90
+New folder1/15
+bounds:190,5,36,175
+offsets:5,9,201,191
+rotate:90
+New folder1/2
+bounds:1712,41,42,116
+offsets:142,37,201,191
+rotate:90
+New folder1/3
+bounds:1392,194,88,145
+offsets:113,24,201,191
+rotate:90
+New folder1/4
+bounds:557,18,101,167
+offsets:87,11,201,191
+rotate:90
+New folder1/5
+bounds:1393,14,129,178
+offsets:68,7,201,191
+New folder1/6
+bounds:1204,151,131,186
+offsets:53,2,201,191
+rotate:90
+New folder1/7
+bounds:566,121,153,188
+offsets:40,2,201,191
+rotate:90
+New folder1/8
+bounds:756,110,164,186
+offsets:17,3,201,191
+rotate:90
+New folder1/9
+bounds:1062,97,140,185
+offsets:21,4,201,191
+New folder1/mini_boss_vfx-artic-ground_blast_24
+bounds:726,5,185,45
+offsets:271,22,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_25
+bounds:1838,16,281,69
+offsets:217,22,742,130
+rotate:90
+New folder1/mini_boss_vfx-artic-ground_blast_26
+bounds:1559,299,364,91
+offsets:181,19,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_27
+bounds:634,276,403,98
+offsets:168,14,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_28
+bounds:1120,284,417,102
+offsets:158,10,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_29
+bounds:634,376,484,113
+offsets:128,7,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_30
+bounds:2,250,554,116
+offsets:93,6,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_31
+bounds:2,368,630,121
+offsets:54,4,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_32
+bounds:1559,392,440,97
+offsets:147,19,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_33
+bounds:2,43,435,101
+offsets:146,18,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_34
+bounds:2,146,439,102
+offsets:142,17,742,130
+New folder1/mini_boss_vfx-artic-ground_blast_35
+bounds:1120,388,437,101
+offsets:139,17,742,130

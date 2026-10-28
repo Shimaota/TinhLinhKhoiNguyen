@@ -1,0 +1,95 @@
+Mammoth.png
+size:1926,225
+filter:Linear,Linear
+scale:0.2
+Mammoth1_img/body
+bounds:2,10,213,168
+rotate:90
+Mammoth1_img/ear
+bounds:512,3,57,86
+rotate:90
+Mammoth1_img/eye
+bounds:1885,184,39,39
+Mammoth2_img/eye
+bounds:1885,184,39,39
+Mammoth3_img/eye
+bounds:1885,184,39,39
+Mammoth1_img/fur1
+bounds:512,62,161,118
+rotate:90
+Mammoth1_img/fur2
+bounds:776,5,55,72
+rotate:90
+Mammoth1_img/head
+bounds:1112,96,100,127
+Mammoth1_img/leg1 L
+bounds:1493,100,73,123
+Mammoth1_img/leg1 L copy
+bounds:1418,100,73,123
+Mammoth1_img/leg2 L
+bounds:1020,2,63,94
+rotate:90
+Mammoth1_img/leg2 L copy
+bounds:924,2,63,94
+rotate:90
+Mammoth1_img/trunk
+bounds:872,67,78,156
+Mammoth1_img/tusk L
+bounds:1116,5,107,89
+Mammoth1_img/tusk L copy
+bounds:1703,9,89,89
+Mammoth3_img/tusk L copy
+bounds:1703,9,89,89
+Mammoth2_img/body
+bounds:172,10,213,168
+rotate:90
+Mammoth2_img/ear
+bounds:600,3,57,86
+rotate:90
+Mammoth2_img/fur1
+bounds:632,62,161,118
+rotate:90
+Mammoth2_img/fur2
+bounds:850,5,55,72
+rotate:90
+Mammoth2_img/head
+bounds:1214,96,100,127
+Mammoth2_img/leg1 L
+bounds:1643,100,73,123
+Mammoth2_img/leg1 L copy
+bounds:1568,100,73,123
+Mammoth2_img/leg2 L
+bounds:1508,4,63,94
+Mammoth2_img/leg2 L copy
+bounds:1443,4,63,94
+Mammoth2_img/trunk
+bounds:952,67,78,156
+Mammoth2_img/tusk L
+bounds:1225,5,107,89
+Mammoth2_img/tusk L copy
+bounds:1794,9,89,89
+Mammoth3_img/body
+bounds:342,10,213,168
+rotate:90
+Mammoth3_img/ear
+bounds:688,3,57,86
+rotate:90
+Mammoth3_img/fur1
+bounds:752,62,161,118
+rotate:90
+Mammoth3_img/fur2
+bounds:1868,110,55,72
+Mammoth3_img/head
+bounds:1316,96,100,127
+Mammoth3_img/leg1 L
+bounds:1793,100,73,123
+Mammoth3_img/leg1 L copy
+bounds:1718,100,73,123
+Mammoth3_img/leg2 L
+bounds:1638,4,63,94
+Mammoth3_img/leg2 L copy
+bounds:1573,4,63,94
+Mammoth3_img/trunk
+bounds:1032,67,78,156
+Mammoth3_img/tusk L
+bounds:1334,5,107,89

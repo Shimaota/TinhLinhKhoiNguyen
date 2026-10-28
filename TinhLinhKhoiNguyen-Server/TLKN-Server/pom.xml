@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.tlnt</groupId>
+    <artifactId>tlnt-server</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <netty.version>4.1.115.Final</netty.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <exec.mainClass>com.tlnt.server.GameServer</exec.mainClass>
+    </properties>
+
+    <repositories>
+        <!-- Holds kryonet-client-compat (see dependency below) as a normal resolvable artifact,
+             so it behaves like any other Maven dependency (compile classpath AND bundled by
+             maven-shade-plugin) instead of the special-cased, shade-unfriendly "system" scope. -->
+        <repository>
+            <id>project-local-repo</id>
+            <url>file://${project.basedir}/local-repo</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- NOT the Maven Central com.esotericsoftware:kryonet artifact: verified byte-for-byte that
+             the client's tlnt-libs.jar bundles a DIFFERENT/patched KryoNet build (every class file's
+             SHA-256 differs, and it's even missing ClientDiscoveryHandler/ServerDiscoveryHandler).
+             Using the "real" Maven artifact made the internal KryoNet handshake (RegisterTCP) fail
+             right after TCP connect -> immediate disconnect, before our own opcode 0 handler ever ran.
+             This jar is extracted directly from the client's own tlnt-libs.jar
+             (com/esotericsoftware/{kryonet,kryo,minlog,reflectasm}/** + org/objenesis/**), so the wire
+             format is guaranteed identical. IMPORTANT: extract full package directories (`unzip` a
+             glob like "com/esotericsoftware/kryo/*" silently drops nested subpackages such as
+             kryo/io, kryo/serializers, kryo/util, kryonet/rmi, kryonet/util, objenesis/instantiator,
+             objenesis/strategy -> unzip the WHOLE jar first, then copy the package folders wholesale:
+               unzip -o tlnt-libs.jar -d /tmp/x
+               mkdir -p local-repo-src/com/esotericsoftware local-repo-src/org
+               cp -r /tmp/x/com/esotericsoftware/{kryonet,kryo,minlog,reflectasm} local-repo-src/com/esotericsoftware/
+               cp -r /tmp/x/org/objenesis local-repo-src/org/
+               jar cf local-repo/com/tlnt/kryonet-client-compat/1.0/kryonet-client-compat-1.0.jar -C local-repo-src .
+             Maven treats non-SNAPSHOT versions as immutable and caches them in ~/.m2/repository, so
+             after regenerating the jar also run:
+               rm -rf ~/.m2/repository/com/tlnt/kryonet-client-compat
+             or Maven will keep using the stale cached copy instead of the updated file. -->
+        <dependency>
+            <groupId>com.tlnt</groupId>
+            <artifactId>kryonet-client-compat</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <!-- Tầng mạng chính (net.transport=netty): nhiều luồng I/O, bộ đệm dùng chung, không quét O(n) mỗi lần
+             select như KryoNet. Chỉ cần handler + transport; bản epoll (Linux) tự bật nếu có, Windows dùng NIO. -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+        <!-- Cổng WebSocket cho client web (ws.port): HTTP upgrade + khung WebSocket. -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec-http</artifactId>
+            <version>${netty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport-native-epoll</artifactId>
+            <version>${netty.version}</version>
+            <classifier>linux-x86_64</classifier>
+        </dependency>
+
+        <!-- SQL: driver MySQL (chạy tốt với MariaDB của XAMPP) + connection pool + JSON cho cột mảng. -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>8.2.0</version>
+            <exclusions>
+                <!-- protobuf chỉ dùng cho X DevAPI, JDBC thường không cần -> jar nhẹ hơn ~1.7MB. -->
+                <exclusion>
+                    <groupId>com.google.protobuf</groupId>
+                    <artifactId>protobuf-java</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+        <!-- Hikari log qua slf4j, server tự log bằng Log.java -> tắt log slf4j (ghim api 2.x khớp nop). -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>tlnt-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.tlnt.server.GameServer</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,57 @@
+4.png
+size:420,141
+filter:Linear,Linear
+scale:0.25
+Hunter_img/Body
+bounds:355,3,62,63
+Hunter_img/Group 8
+bounds:286,64,75,67
+offsets:0,0,76,67
+rotate:90
+Hunter_img/Head
+bounds:217,53,67,86
+Hunter_img/L shoulder
+bounds:2,5,21,37
+rotate:90
+Hunter_img/L_Shoulder_Pad
+bounds:174,11,34,31
+rotate:90
+Hunter_img/L_hand
+bounds:320,30,32,32
+Hunter_img/L_leg
+bounds:289,2,29,60
+Hunter_img/Layer 35
+bounds:174,2,33,7
+Hunter_img/Layer 36
+bounds:218,3,6,7
+Hunter_img/Layer 37
+bounds:209,3,7,7
+Hunter_img/Layer 51
+bounds:163,47,92,52
+rotate:90
+Hunter_img/Palm_1
+bounds:320,13,13,15
+Hunter_img/Palm_2
+bounds:61,6,20,14
+offsets:0,0,20,15
+rotate:90
+Hunter_img/Palm_3
+bounds:41,6,20,18
+rotate:90
+Hunter_img/Pant
+bounds:355,68,71,63
+rotate:90
+Hunter_img/R_Shoulder_Pad
+bounds:207,12,46,33
+Hunter_img/R_hand
+bounds:255,3,32,48
+Hunter_img/R_leg
+bounds:108,4,35,64
+rotate:90
+Hunter_img/R_shouder
+bounds:77,3,29,36
+Hunter_img/Scape
+bounds:70,41,91,98
+Hunter_img/lv 2
+bounds:2,28,111,66
+rotate:90

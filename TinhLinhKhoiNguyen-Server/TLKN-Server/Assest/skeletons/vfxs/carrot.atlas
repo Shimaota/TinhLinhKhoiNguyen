@@ -1,0 +1,21 @@
+carrot.png
+size:118,234
+filter:Linear,Linear
+scale:0.25
+Layer 1
+bounds:2,140,92,68
+rotate:90
+Layer 2
+bounds:72,147,85,35
+rotate:90
+Layer 3
+bounds:67,76,62,46
+offsets:3,13,72,59
+rotate:90
+Layer 4
+bounds:2,64,74,63
+offsets:0,12,78,75
+rotate:90
+Layer 5
+bounds:2,2,60,114
+rotate:90

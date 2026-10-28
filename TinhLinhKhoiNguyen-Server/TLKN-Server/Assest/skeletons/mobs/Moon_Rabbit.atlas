@@ -1,0 +1,43 @@
+Moon_Rabbit.png
+size:267,267
+filter:Linear,Linear
+scale:0.5
+Head
+bounds:2,7,93,77
+arm L 2
+bounds:163,52,42,33
+arm R 2
+bounds:163,15,40,35
+arn L 1
+bounds:227,7,34,32
+arn R 1
+bounds:227,41,34,33
+asas
+bounds:240,133,55,25
+rotate:90
+asas2
+bounds:240,76,55,25
+rotate:90
+body
+bounds:2,86,93,101
+ear L
+bounds:2,189,137,76
+ear R
+bounds:141,190,103,75
+eye
+bounds:246,233,32,19
+rotate:90
+leg L 1
+bounds:97,22,72,64
+rotate:90
+leg L 2
+bounds:97,2,57,18
+leg R 1
+bounds:166,124,72,64
+leg R 2
+bounds:207,28,57,18
+rotate:90
+necklace
+bounds:166,87,69,35
+tail
+bounds:97,96,67,91

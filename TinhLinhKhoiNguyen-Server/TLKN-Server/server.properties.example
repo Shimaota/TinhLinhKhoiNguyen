@@ -1,0 +1,63 @@
+# =====================================================================
+#  TLNT Game Server - configuration template
+#  Copy this file to "server.properties" (same folder) and edit it.
+#  server.properties is git-ignored, so your passwords never get committed.
+#  Every key has a built-in default; missing keys are fine.
+# =====================================================================
+
+# === NETWORK ===
+# TCP port for the game client (desktop / Android).
+server.port=7502
+# WebSocket port for the browser client. 0 = disabled. The web client defaults to server.port + 1.
+ws.port=7503
+
+# === DATAGAME (resource files the client downloads over HTTP) ===
+# httpBaseUrl: the PUBLIC URL where the DataGame folder is served (nginx / Apache / XAMPP / CDN).
+#   This exact URL is sent to every client, so never use 127.0.0.1 on a real server.
+#   Examples: http://203.0.113.10/DataGame   or   https://cdn.example.com/DataGame
+datagame.httpBaseUrl=http://127.0.0.1:8080/DataGame
+# dir: the DataGame folder ON THE SERVER MACHINE, only used to read the version header of
+#   game / map / item / skill. Relative paths start from the folder you run the server in.
+#   Leave empty if DataGame lives on another machine / CDN -> versions are read via httpBaseUrl.
+datagame.dir=../DataGame
+
+# === DATABASE: static game data (database/tlnt_data.sql) ===
+db.url=jdbc:mysql://127.0.0.1:3306/tlnt_data?characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+db.user=root
+db.password=
+db.poolSize=4
+
+# === DATABASE: accounts + characters (database/tlnt_server_schema.sql) ===
+# Uses the same db.user / db.password as above.
+db.player.url=jdbc:mysql://127.0.0.1:3306/tlnt_server?characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true
+login.reloginDelaySeconds=10
+player.autosaveMinutes=5
+player.startMapId=2
+
+# === WORLD ===
+# Tick length in ms (33 ~ 30 fps). Raise to 50-100 if the machine is overloaded.
+world.tickMillis=33
+
+# === ASSET KEYS ===
+# AES-128 keys (32 hex chars) the server sends to the client to decrypt the textures / skeleton atlases
+# inside DataGame/ver_*/res_*.zip. They MUST match the keys the zips were encrypted with.
+# Verified against every PNG in DataGame/ver_1 (see README, "Asset keys").
+assets.textureDecryptKey=9b9acb5a213684988617dd232d7f6126
+assets.atlasDecryptKey=bb47d4ace9e9d4b99884c8da9734ff77
+
+# === GAMEPLAY ===
+# Chat cheat commands (/hp, /mp, /full ...) for EVERY player. Keep false on a live server.
+chat.testCommands=false
+exp.rate=1
+exp.field=0.0018
+exp.penaltyStep=0.1
+exp.penaltyMin=0.2
+exp.dungeon=0.02
+mob.attack=true
+mob.respawnSeconds=3
+
+# === ADMIN PANEL (only reachable from the server machine: http://127.0.0.1:8090, 0 = disabled) ===
+admin.port=8090
+# Strongly recommended on a VPS that other people can log into.
+admin.password=
+admin.assetsDir=Assest

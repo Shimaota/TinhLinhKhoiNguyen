@@ -1,0 +1,41 @@
+Sky_guard_1.png
+size:669,172
+filter:Linear,Linear
+scale:0.5
+enemy_test/body
+bounds:130,43,92,127
+enemy_test/dress
+bounds:413,64,106,98
+rotate:90
+enemy_test/hair1
+bounds:2,17,153,126
+rotate:90
+enemy_test/hair2
+bounds:327,58,84,112
+enemy_test/head
+bounds:224,58,112,101
+rotate:90
+enemy_test/l arm1
+bounds:606,15,47,61
+offsets:0,1,48,63
+rotate:90
+enemy_test/l arm2
+bounds:572,64,43,77
+rotate:90
+enemy_test/l leg
+bounds:513,70,57,100
+enemy_test/l leg2
+bounds:502,3,59,102
+rotate:90
+enemy_test/r arm1
+bounds:130,5,36,64
+rotate:90
+enemy_test/r arn2
+bounds:224,2,54,69
+rotate:90
+enemy_test/r leg
+bounds:572,109,61,95
+rotate:90
+enemy_test/weapon
+bounds:295,8,205,48
+offsets:0,1,205,49

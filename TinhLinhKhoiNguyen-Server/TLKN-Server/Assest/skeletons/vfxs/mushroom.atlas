@@ -1,0 +1,8 @@
+mushroom.png
+size:73,81
+filter:Linear,Linear
+scale:0.25
+Spr_Env_MainCity_Prop_Mushroom
+bounds:2,2,47,47
+grass
+bounds:2,51,69,28

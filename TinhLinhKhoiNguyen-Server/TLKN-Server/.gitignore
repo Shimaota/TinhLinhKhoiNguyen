@@ -1,0 +1,17 @@
+target/
+dependency-reduced-pom.xml
+.mvn/wrapper/maven-wrapper.jar
+*.log
+
+# Local config (passwords) - commit server.properties.example instead
+server.properties
+
+# Player saves that failed to write to SQL (contain player data)
+failed_saves/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+nbproject/
+nbactions.xml

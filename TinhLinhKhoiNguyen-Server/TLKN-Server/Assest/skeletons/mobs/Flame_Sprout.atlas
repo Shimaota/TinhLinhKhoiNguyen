@@ -1,0 +1,112 @@
+Flame_Sprout.png
+size:500,960
+filter:Linear,Linear
+scale:0.5
+pet5_img/F_01
+bounds:343,116,154,191
+offsets:45,31,236,263
+pet5_img/F_02
+bounds:197,320,156,197
+offsets:44,30,236,263
+rotate:90
+pet5_img/F_03
+bounds:205,478,157,200
+offsets:44,31,236,263
+rotate:90
+pet5_img/F_04
+bounds:2,67,146,201
+offsets:41,32,236,263
+pet5_img/F_05
+bounds:2,270,150,202
+offsets:37,33,236,263
+pet5_img/F_06
+bounds:206,797,161,201
+offsets:31,35,236,263
+rotate:90
+pet5_img/F_07
+bounds:2,797,161,202
+offsets:32,35,236,263
+rotate:90
+pet5_img/F_08
+bounds:2,474,160,193
+offsets:35,36,236,263
+rotate:90
+pet5_img/F_09
+bounds:205,637,158,201
+offsets:39,32,236,263
+rotate:90
+pet5_img/F_10
+bounds:2,636,159,201
+offsets:39,34,236,263
+rotate:90
+pet5_img/F_11
+bounds:154,160,158,187
+offsets:41,31,236,263
+rotate:90
+pet5_img/F_12
+bounds:150,2,156,185
+offsets:43,33,236,263
+rotate:90
+pet5_img/arm l
+bounds:396,320,34,36
+offsets:0,0,40,36
+rotate:90
+pet5_img/arm r
+bounds:439,342,33,38
+rotate:90
+pet5_img/body
+bounds:409,875,83,85
+rotate:90
+pet5_img/chest
+bounds:408,717,75,90
+rotate:90
+pet5_img/circlet
+bounds:456,525,64,35
+rotate:90
+pet5_img/ear l
+bounds:408,656,59,69
+rotate:90
+pet5_img/ear r
+bounds:407,524,47,68
+pet5_img/eyebrows
+bounds:479,679,36,12
+rotate:90
+pet5_img/eyes
+bounds:471,591,55,21
+rotate:90
+pet5_img/fluff l
+bounds:453,415,55,33
+rotate:90
+pet5_img/fluff r
+bounds:154,444,28,31
+rotate:90
+pet5_img/foot l
+bounds:479,648,29,14
+rotate:90
+pet5_img/foot r
+bounds:479,346,29,14
+rotate:90
+pet5_img/hair
+bounds:396,392,57,49
+rotate:90
+pet5_img/hand l
+bounds:396,356,34,41
+rotate:90
+pet5_img/hand r
+bounds:434,309,31,39
+rotate:90
+pet5_img/head
+bounds:409,794,86,79
+offsets:0,0,105,88
+pet5_img/leg l
+bounds:456,472,37,51
+pet5_img/leg r
+bounds:447,377,36,47
+rotate:90
+pet5_img/necklace
+bounds:408,594,60,61
+offsets:0,1,60,62
+rotate:90
+pet5_img/tail
+bounds:407,451,71,44
+rotate:90
