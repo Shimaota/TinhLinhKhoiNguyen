@@ -22,8 +22,8 @@ rem    build.bat web             Web client (HTML5/TeaVM):    release\web\
 rem    build.bat all             setup + apk + web (in parallel)
 rem    build.bat install         install the newest APK in release\ on a phone / emulator (adb)
 rem    build.bat ios             check that the iOS code compiles + obfuscates (a real IPA can only be built on a Mac)
-rem    build.bat server          server: ..\TLKN-Server\target\tlnt-server.jar
-rem    build.bat test            run all tests (client + server)
+rem    build.bat server          server: ..\TinhLinhKhoiNguyen-Server\TLKN-Server\target\tlnt-server.jar
+rem    build.bat test            run the client tests
 rem    build.bat run             run the client from source (no packaging)
 rem    build.bat clean           delete old build output (after strange build errors, big branch switches)
 rem
@@ -226,31 +226,22 @@ echo      IPA that: tren Mac chay ./gradlew ios:createIPA ^(can Xcode + chung ch
 goto ok
 
 :do_server
-if not exist "%~dp0..\TLKN-Server\mvnw.cmd" (echo Khong thay ..\TLKN-Server\mvnw.cmd & goto fail)
-pushd "%~dp0..\TLKN-Server" || goto fail
-call "%~dp0..\TLKN-Server\mvnw.cmd" -o -q package -DskipTests
+if not exist "%~dp0..\TinhLinhKhoiNguyen-Server\TLKN-Server\mvnw.cmd" (echo Khong thay ..\TinhLinhKhoiNguyen-Server\TLKN-Server\mvnw.cmd & goto fail)
+pushd "%~dp0..\TinhLinhKhoiNguyen-Server\TLKN-Server" || goto fail
+call ".\mvnw.cmd" -o -q package -DskipTests
 if errorlevel 1 (
   echo.
   echo ^>^> Build offline loi - thu lai co tai thu vien ^(online^)...
-  call "%~dp0..\TLKN-Server\mvnw.cmd" -q package -DskipTests
+  call ".\mvnw.cmd" -q package -DskipTests
 )
 set "RC=!ERRORLEVEL!"
 popd
 if not "%RC%"=="0" goto fail
-echo SERVER: ..\TLKN-Server\target\tlnt-server.jar
+echo SERVER: ..\TinhLinhKhoiNguyen-Server\TLKN-Server\target\tlnt-server.jar
 goto ok
 
 :do_test
 call :gradle :core:test || goto fail
-if exist "%~dp0..\TLKN-Server\mvnw.cmd" (
-  pushd "%~dp0..\TLKN-Server" || goto fail
-  call "%~dp0..\TLKN-Server\mvnw.cmd" -o -q test
-  set "RC=!ERRORLEVEL!"
-  popd
-  if not "!RC!"=="0" goto fail
-) else (
-  echo Bo qua test server: khong thay ..\TLKN-Server
-)
 echo TEST: tat ca xanh
 goto ok
 
