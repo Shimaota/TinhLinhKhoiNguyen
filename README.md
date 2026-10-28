@@ -14,10 +14,7 @@
   <img alt="Windows" src="https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white">
   <img alt="Android" src="https://img.shields.io/badge/Android-3DDC84?style=flat-square&logo=android&logoColor=white">
   <img alt="Web" src="https://img.shields.io/badge/Web%20(HTML5)-E34F26?style=flat-square&logo=html5&logoColor=white">
-  <img alt="iOS" src="https://img.shields.io/badge/iOS-000000?style=flat-square&logo=apple&logoColor=white">
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/Shimaota/TinhLinhKhoiNguyen?style=flat-square">
-  <img alt="Repo size" src="https://img.shields.io/github/repo-size/Shimaota/TinhLinhKhoiNguyen?style=flat-square">
-</p>
+  <img alt="iOS" src="https://img.shields.io/badge/iOS-000000?style=flat-square&logo=apple&logoColor=white"></p>
 
 [**Client**](TinhLinhKhoiNguyen-Client/) · [**Server**](TinhLinhKhoiNguyen-Server/) · [**Quick start**](#-quick-start) · [**Architecture**](#-architecture)
 
