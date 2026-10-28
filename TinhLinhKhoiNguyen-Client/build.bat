@@ -35,7 +35,7 @@ rem    obf=off|ascii|mixed|unicode                  obfuscation style (default: 
 rem    online                                       allow downloading libraries right away (default --offline; on missing
 rem                                                 libraries it AUTOMATICALLY retries online, code errors are NOT rebuilt)
 rem    nopause                                      do not pause at the end (when run from another script / CI)
-rem  Example:  build.bat all host=45.122.220.84 port=7502
+rem  Example:  build.bat all host=203.0.113.10 port=7502
 rem
 rem  Change the game name / data folder / default server: edit client.properties (repo root) and rebuild.
 rem  Version: gradle.properties (appVersionName, appVersionCode - every new APK must INCREASE versionCode).

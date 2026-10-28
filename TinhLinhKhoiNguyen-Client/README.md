@@ -158,7 +158,7 @@ How it is used:
 Extra parameters go **after** the command, as `key=value`:
 
 ```bat
-build.bat all host=45.122.220.84 port=7502       :: override the default server for this build only
+build.bat all host=203.0.113.10 port=7502       :: override the default server for this build only
 build.bat apk host=10.0.2.2                      :: Android emulator -> server running on this PC
 build.bat web wsurl=wss://game.example.com/ws    :: Web client WebSocket URL
 build.bat pc obf=off                             :: no obfuscation (debugging)
